@@ -7,7 +7,7 @@ import Base.sum
 Computes the moving average of the vector y with p data points.
 
 With centered equal true, p has to be an odd number so that an equal number of leads and lags can be used. By default
-when centered = false, the computation includes the datum plus its most recent (p-1) lagged value.
+when centered = false, the computation includes the datum plus its most recent p-1 lagged values.
 This behavior can be changed by including an offset; a positive offset includes one additonal lead at
 the expense of the oldest lag value
 
@@ -72,7 +72,7 @@ end
 Computes the moving average of the vector y with p data points weighted by vector w.
 
 With centered equal true, p has to be an odd number so that an equal number of leads and lags can be used. By default
-when centered = false, the computation includes the datum plus its most recent (p-1) lagged value.
+when centered = false, the computation includes the datum plus its most recent p-1 lagged values.
 This behavior can be changed by including an offset; a positive offset includes one additonal lead at
 the expense of the oldest lag value.
 
@@ -191,23 +191,29 @@ function maSeason(y :: Vector, seasons :: Int; repeating::Bool = false)
 end
 
 """
-    maDecompose(y :: Vector, seasons :: Int; combine::Bool = false)
+    maDecompose(y :: Vector, seasons :: Int; combine::Bool = false, model=:add)
 
-Decomposes the time series y into trend, season and the remaining noise components.
+Decomposes the time series y into trend (T), season (S) and noise components (I).
 
 Either assumes an additive model (:add) or a multiplicative model (:mul).
 
 Replicates the R decompose{stats} function. For a more generic function implementation see
 decompose of this package (TrendDecomposition.decompose).
+
+Returns a matrix where the columns correspont to the above mentioned components in (T, S, I) order;
+with combine equal true it returns (y, T, S, I) as columns.
 """
 function maDecompose(y :: Vector, seasons :: Int; combine::Bool = false, model=:add)
     trend = rollingAverage(y, 5)
     if model == :add
         sean = maSeason(y - trend, seasons, repeating=true)
         idiot = y - trend - sean
-    else
+    elseif model == :mul
         sean = maSeason(y ./ trend, seasons, repeating=true)
         idiot = y ./ trend ./ sean
+    else
+        println("Please use either model=:add or model=:mul as specification")
+        return
     end
     if combine == true
         return hcat(y, trend, sean, idiot)

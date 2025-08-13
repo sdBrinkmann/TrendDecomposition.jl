@@ -33,21 +33,21 @@ q = 1 / 16^2
 
 
 @testset "Iteration hpFilter" begin
-    @test HP(y, λ) ≈ HP(y, λ, 1)
+    @test hpFilter(y, λ) ≈ hpFilter(y, λ, 1)
     #@test HP(HP(y, λ), λ) == HP(y, λ, 2)
 
 end
 
 @testset "Equivalence hpFilter" begin
-    @test HP(y, 0) == y
-    @test HP(y, λ) == bohl_filter(y, 2, λ)
-    @test bHP(y, λ) ≈ HP(y, λ)
+    @test hpFilter(y, 0) == y
+    @test hpFilter(y, λ) == bohlmannFilter(y, 2, λ)
+    @test bhpFilter(y, λ) ≈ hpFilter(y, λ)
 end
 
 @testset "Errors hpFilter" begin
-    @test_throws AssertionError HP([1], λ)
-    @test_throws AssertionError bHP([1], λ)
-    @test_throws AssertionError bohl_filter([1], 1, λ)
+    @test_throws AssertionError hpFilter([1], λ)
+    @test_throws AssertionError bhpFilter([1], λ)
+    @test_throws AssertionError bohlmannFilter([1], 1, λ)
 end
 
 
