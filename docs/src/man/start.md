@@ -33,16 +33,16 @@ path = "/.../data"
 IPI = CSV.read("$(path)/IPB50001SQ.csv", copycols=true)
 
 # HP filter with λ = 1600
-hp = HP(IPI[!, 2], 1600)
+hp = hpFilter(IPI[!, 2], 1600)
 
 # The above is equivalent to Whittaker-Henderson smoothing with m = 2 differentiation
-wh = bohl_filter(IPI[!, 2], 2, 1600)
+wh = bohlmannFilter(IPI[!, 2], 2, 1600)
 
 # Boosted HP filter with baysian-type information criterion (BIC)
-bHP_bic = bHP(IPI[!, 2], 1600, Criterion="BIC")
+bHP_bic = bhpFilter(IPI[!, 2], 1600, Criterion="BIC")
 
 # Boosted HP filter with augmented Dickey-Fuller (ADF) test 
-bHP_adf = bHP(IPI[!, 2], 1600, Criterion="ADF", p=0.01)
+bHP_adf = bhpFilter(IPI[!, 2], 1600, Criterion="ADF", p=0.01)
 ```
 
 ![HP Results](../assets/IPI_HP.png)

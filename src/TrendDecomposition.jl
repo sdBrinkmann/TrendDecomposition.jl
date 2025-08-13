@@ -9,6 +9,12 @@ include("HPFilter.jl")
 include("movingAverages.jl")
 greet() = print("Hello World!")
 
-export HP, bHP, bohl_filter, rollingAverage, maSeason, maDecompose
+export
+    hpFilter,
+    bhpFilter,
+    bohlmannFilter,
+    rollingAverage,
+    maSeason,
+    maDecompose
 
 end # module

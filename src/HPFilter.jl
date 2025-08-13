@@ -1,12 +1,12 @@
 
 """
-    HP(x::Vector, λ::Real)
+    hpFilter(x::Vector, λ::Real)
 
 Apply the Hodrick-Prescott decomposition to vector x with multiplier value λ.
 
 Function returns the trend component.
 """
-function HP(x::Vector, λ::Real)
+function hpFilter(x::Vector, λ::Real)
     n = length(x)
     m = 2
     @assert n > m
@@ -19,13 +19,13 @@ function HP(x::Vector, λ::Real)
 end
 
 """
-    HP(x::Vector, λ::Real, iter::Int)
+    hpFilter(x::Vector, λ::Real, iter::Int)
 
 Compute boosted Hodrick-Prescott filter with number of iterations specified by iter.
 
 Function returns the trend component.
 """
-function HP(x::Vector, λ::Real, iter::Int)
+function hpFilter(x::Vector, λ::Real, iter::Int)
     n = length(x)
     m = 2
     @assert n > m
@@ -49,7 +49,7 @@ end
 
 
 """
-    bHP(x::Vector, λ::Real; Criterion="BIC", max_iter::Int = 100, p::Float64=0.05)
+    bhpFilter(x::Vector, λ::Real; Criterion="BIC", max_iter::Int = 100, p::Float64=0.05)
 
 Computes the boosted Hodrick-Prescott filter by appyling the filter iterativly over the trend component
 with stop criterion being either a Bayesian-type
@@ -58,7 +58,7 @@ information criterion (BIC) or an augmented Dickey-Fuller (ADF) test.
 Function returns the trend component.
 
 """
-function bHP(x::Vector, λ::Real; Criterion="BIC", max_iter::Int = 100, p::Float64=0.05)
+function bhpFilter(x::Vector, λ::Real; Criterion="BIC", max_iter::Int = 100, p::Float64=0.05)
     n = length(x)
     m = 2
     @assert n > m
@@ -123,13 +123,13 @@ end
 
 
 """
-    bohl_filter(x :: Vector, m :: Int, λ :: Real)
+    bohlmannFilter(x :: Vector, m :: Int, λ :: Real)
 
 This is the generalization of the Hodrick-Prescott filter,
 also known as Whittaker-Henderson smoothing,
 using the m-th difference to estimate the trend component.
 """
-function bohl_filter(x :: Vector, m :: Int, λ :: Real)
+function bohlmannFilter(x :: Vector, m :: Int, λ :: Real)
     n = length(x)
     @assert n > m
     D = difference_matrix(n, m)
