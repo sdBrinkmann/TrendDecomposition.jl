@@ -7,6 +7,7 @@ using Statistics
 
 include("HPFilter.jl")
 include("movingAverages.jl")
+include("expSmoothing.jl")
 greet() = print("Hello World!")
 
 export
@@ -15,6 +16,7 @@ export
     bohlmannFilter,
     rollingAverage,
     maSeason,
-    maDecompose
+    maDecompose,
+    expSmoothing
 
 end # module
