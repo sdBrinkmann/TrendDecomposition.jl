@@ -151,7 +151,7 @@ end
 Given the number of seasons, the function computes the average value of each
 season component. This method works better for detrended data.
 
-With reapeating equal true the function will repeat the results until the output vector
+With repeating equal true the function will repeat the results until the output vector
 has the same length as the input vector y.
 """
 function maSeason(y :: Vector, seasons :: Int; repeating::Bool = false)

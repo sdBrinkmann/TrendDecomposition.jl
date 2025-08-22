@@ -98,3 +98,54 @@ end
     @test maSeason([1, 2, 3, 4, 1, 2, 3, 4], 4) == [1, 2, 3, 4]
 end
 
+
+@testset "EWMA" begin
+    @test all(x -> x == y[2] - y[1], holtLinear(y, 0.5, 0.0)[2][2:end, 2])
+    @test holtLinear(y, 1.0, 0.5)[2][2:end, 1] == y[2:end]
+
+    @test all(x -> x == y[2] - y[1], holtWinters(y, 0.5, 0.0, 0.5, 1)[2][2:end, 2])
+    @test holtWinters(y, 1.0, 0.5, 0.5, 1)[2][2:end, 1] == y[2:end]
+
+    @test brownLinear(y, 1.0; φ = 0.8)[2][3, 2] == (y[2] - y[1]) * 0.8
+    @test holtLinear(y, .5, 0.0, φ = 0.8)[2][3, 2] == (y[2] - y[1]) * 0.8  
+end
+
+
+
+
+@testset "EWMA forecasting" begin
+    f = holtLinear(y, .84, .84, h = 4) 
+    @test f[1][(end-3):end] == [f[2][end, 1] + j * f[2][end, 2] for j in 1:4]
+
+    f = brownLinear(y, .84, h = 4) 
+    @test f[1][(end-3):end] == [f[2][end, 1] + j * f[2][end, 2] for j in 1:4]
+
+    f = holtWinters(y, .84, .84, .84, 4, h = 4)
+    S = f[2][(end-3):end, 3]
+    @test f[1][(end-3):end] == [f[2][end, 1] + j * f[2][end, 2] + S[j] for j in 1:4]
+
+    f = holtWinters(y, .84, .84, .84, 4, h = 4, model=:mul)
+    S = f[2][(end-3):end, 3]
+    @test f[1][(end-3):end] == [(f[2][end, 1] + j * f[2][end, 2]) * S[j] for j in 1:4]
+end
+
+
+
+@testset "Holt Brown equivalence" begin
+    ω = 0.8
+
+    λ1 = 1 - ω^2
+    λ2 = (1 - ω) / (1 + ω)
+
+    res1 = brownLinear(y, ω)
+    res2 = holtLinear(y, λ1, λ2)
+
+    @test all(res1[1][3:end] .≈ res2[1][3:end])
+    @test all(res1[2][3:end,1] .≈ res2[2][3:end,1])
+    @test all(res1[2][3:end,2] .≈ res2[2][3:end,2])
+
+    res3 = brownLinear(x, ω, startValues = (.5, .5))
+    res4 = holtLinear(x, λ1, λ2, startValues = (.5, .5))
+
+    @test all(res3 .≈ res4)   
+end

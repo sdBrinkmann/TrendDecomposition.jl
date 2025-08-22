@@ -17,6 +17,10 @@ export
     rollingAverage,
     maSeason,
     maDecompose,
-    expSmoothing
+    expSmoothing,
+    brownLinear,
+    holtLinear,
+    holtWinters
+    
 
 end # module
