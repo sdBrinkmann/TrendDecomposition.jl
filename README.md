@@ -12,8 +12,29 @@ both (stochastic) trend component estimation and forecasting, though not all met
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://sdbrinkmann.github.io/TrendDecomposition.jl/stable/
 
+
+Functionality and Implemented Methods
+-------------------------------------------------------------------------
+The following is list of already implemented and documented methods:
+
+- Exponential Smoothing
+  - Simple exponential smoothing
+  - Double exponential smoothing / Brown linear method
+  - Holt Linear procedure
+  - Holt Winters method
+  
+- Penalized smoothing
+  - Bohlmann Filter / Whittaker-Henderson Smoothing
+  - Leser / Hodrick-Prescott (HP) Filter
+  - Boosted HP Filter
+  
+- Moving Average (MA)
+- Seasonal Average
+- Classical Decomposition by moving averages
+
+
 Get Started
------------------
+-------------------------------------------------------------------------
 This package is now featured on the official general Julia package registry. 
 Simply use Julia's package manager pkg to add TrendDecomposition to your preferred environment.
 

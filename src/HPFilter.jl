@@ -51,7 +51,7 @@ end
 """
     bhpFilter(x::Vector, λ::Real; Criterion="BIC", max_iter::Int = 100, p::Float64=0.05)
 
-Computes the boosted Hodrick-Prescott filter by appyling the filter iterativly over the trend component
+Computes the boosted Hodrick-Prescott filter by appyling the filter iteratively over the trend component
 with stop criterion being either a Bayesian-type
 information criterion (BIC) or an augmented Dickey-Fuller (ADF) test.
 

@@ -149,3 +149,37 @@ end
 
     @test all(res3 .≈ res4)   
 end
+
+
+@testset "Optimization" begin
+    f, D, λ = holtWinters(y, 4)
+    f1, D1 = holtWinters(y, λ[1], λ[2], λ[3], 4, φ = λ[4])
+    @test f[3:end] == f1[3:end]
+    @test D[3:end, :] == D1[3:end, :]
+
+    f, D, λ = holtWinters(y, 4, φ = 1.0)
+    f1, D1 = holtWinters(y, λ[1], λ[2], λ[3], 4)
+    @test f[3:end] == f1[3:end]
+    @test D[3:end, :] == D1[3:end, :]
+
+    f, D, λ = holtLinear(y)
+    f1, D1 = holtLinear(y, λ[1], λ[2], φ = λ[3])
+    @test f[3:end] == f1[3:end]
+    @test D[3:end, :] == D1[3:end, :]
+
+    f, D, λ = holtLinear(y, φ = 1.0)
+    f1, D1 = holtLinear(y, λ[1], λ[2])
+    @test f[3:end] == f1[3:end]
+    @test D[3:end, :] == D1[3:end, :]
+
+    f, D, λ = brownLinear(y)
+    f1, D1 = brownLinear(y, λ[1], φ = λ[2])
+    @test f[3:end] == f1[3:end]
+    @test D[3:end, :] == D1[3:end, :]
+
+    f, D, λ = brownLinear(y, φ = 1.0)
+    f1, D1 = brownLinear(y, λ)
+    @test f[3:end] == f1[3:end]
+    @test D[3:end, :] == D1[3:end, :]
+
+end

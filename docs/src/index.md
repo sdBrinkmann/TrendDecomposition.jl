@@ -5,7 +5,7 @@ Welcome to the TrendDecomposition.jl documentation.
 !!! info
 	This is a preliminary version of the documentation.
 	The package is also not feature complete until version 1.0,
-	thus sometimes there are references to not yet implemented features such as forecasting.
+	thus sometimes there are references to not yet implemented features.
 
 TrendDecomposition.jl is a Julia package for decomposition of time series into trend and cycle components. More generally it provides 
 both (stochastic) trend component estimation and forecasting, though not all methods are suitable for forecasting.
@@ -15,9 +15,19 @@ the cyclical component $c$ of time series $y$ as $c = y - t$.
 Often it is up to the user of this module to calculate the cyclical components themselves with the computed trend returned from a function 
 provided by this module.
 
-For now this package implements moving averages, simiple seaonal averages and based on that additive and multiplicative model decomposition. It also includes the Hodrick-Prescott (HP) filter as well as its generalization,
-generally known as Whittaker-Henderson smoothing, in this package named bohlmannFilter after its first inventor George Bohlmann.
+The following is list of already implemented and documented methods:
 
-In addition this module tries to implement also more novel approaches; so far the boosted HP Filter based 
-on Peter Phillips and Zhentao Shi (2019): "[Boosting the Hodrick-Prescott Filter](https://arxiv.org/abs/1905.00175)" 
-has been implemented.
+- Exponential Smoothing
+  - Simple exponential smoothing
+  - Double exponential smoothing / Brown linear method
+  - Holt Linear procedure
+  - Holt Winters method
+  
+- Penalized smoothing
+  - Bohlmann Filter / Whittaker-Henderson Smoothing
+  - Leser / Hodrick-Prescott (HP) Filter
+  - Boosted HP Filter
+  
+- Moving Average (MA)
+- Seasonal Average
+- Classical Decomposition by moving averages

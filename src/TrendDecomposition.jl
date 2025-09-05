@@ -4,6 +4,7 @@ using LinearAlgebra
 using SparseArrays
 using HypothesisTests
 using Statistics
+using Optim
 
 include("HPFilter.jl")
 include("movingAverages.jl")
