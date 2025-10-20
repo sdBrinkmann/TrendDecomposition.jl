@@ -8,7 +8,10 @@ in order to conduct forecasts. Here in its additive form it can be written as
 	y_t = l_t + S_t + u_t,
 ```
 where ``l`` denotes the level or trend component and ``S`` the seaonal component, the 
-latter component is only included in the Holt-Winters method. 
+latter component is only included in the Holt-Winters method.[^Winters60] 
+
+[^Winters60]:
+	> Winters, P.R. (1960). Forecasting sales by exponentially weighted moving averages. Management Science 6: 324-42
 
 The residual or noise term ``u_t`` is implicitly assumed and the parameters of the 
 models down below are estimated by minimizing the squared residual terms, ``\^u_t = y_t - \^y_t``, 
@@ -67,10 +70,12 @@ slope ``b_t`` parameters can be estimated as:
 	\^y_t &= l_{t-1} + \varphi b_{t -1}
 	\end{aligned}
 ```
-This recursion is known as double exponential smoothing and also named after R.G. Brown and
+This recursion is known as double exponential smoothing and also named after R.G. Brown (1963)[^Brown63] and
 can been seen as a special case of Holt's procedure by setting ``\lambda_0 = 1 - \lambda^2``
 and ``\lambda_1 = \frac{1 - \lambda}{1 + \lambda}``.
 
+[^Brown63]:
+	> Brown, R.G. (1963). Smoothing, Forecasting and Prediction. Englewood Cliffs: Prentice Hall.
 
 ```@docs
 brownLinear(y :: Vector, λ :: Real)
@@ -135,7 +140,7 @@ for evaluating any forecast model with a horizon h greater than 1.
 ### How to get the optimized parameters
 
 By using multiple dispatch the above introduced functions can basically be used without specifying any smoothing
-parameters for them to be estimated automatically. The current implementation only allows for all smoothing parameters to be omitted all together. 
+parameters for them to be estimated automatically. The current implementation only allows for all smoothing parameters to be omitted altogether. 
 In addition, the damping parameter can also be estimated, which is the default, otherwise
 it has to be manually set e.g. ``\varphi = 1.0`` for it to have no impact.
 

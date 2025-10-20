@@ -15,7 +15,7 @@ the cyclical component $c$ of time series $y$ as $c = y - t$.
 Often it is up to the user of this module to calculate the cyclical components themselves with the computed trend returned from a function 
 provided by this module.
 
-The following is list of already implemented and documented methods:
+The following is a list of already implemented and documented methods:
 
 - Exponential Smoothing
   - Simple exponential smoothing

@@ -15,7 +15,7 @@ both (stochastic) trend component estimation and forecasting, though not all met
 
 Functionality and Implemented Methods
 -------------------------------------------------------------------------
-The following is list of already implemented and documented methods:
+The following is a list of already implemented and documented methods:
 
 - Exponential Smoothing
   - Simple exponential smoothing

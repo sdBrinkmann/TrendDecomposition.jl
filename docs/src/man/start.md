@@ -15,13 +15,13 @@ With the package manager simply use the add command:
 @(v1.11) pkg> add https://github.com/sdBrinkmann/TrendDecomposition.jl
 ```
 !!! warning 
-	This package is currently under rapid development and follows Semantic Versioning. Until the 1.0.0 release is reached,
+	This package is currently under development and follows Semantic Versioning. Until the 1.0.0 release is reached,
 	the API of this package can change with any minor version update, 
 	please  consult the documentation of this package after each update when using this package.
 
 # Usage
 
-The basic usage of trend estimation using the Hodrick-Prescott fitler is demonstrated with the [US industrial production index (IPI)](https://fred.stlouisfed.org/series/IPB50001SQ) provided by FRED data service.
+The basic usage of trend estimation using the Hodrick-Prescott filter is demonstrated with the [US industrial production index (IPI)](https://fred.stlouisfed.org/series/IPB50001SQ) provided by FRED data service.
 
 ```Julia
 using TrendDecomposition
@@ -52,7 +52,7 @@ bHP_adf = bhpFilter(IPI[!, 2], 1600, Criterion="ADF", p=0.01)
 
 This package implements moving averages with `rollingAverage` and seasonal averages with `maSeason`.
 With the help of both functions, we can conduct time series decompositions into a trend, seasonal and
-noise component. The function `maDecompose` replicates the decompose{stats} functionallity implemented
+noise component. The function `maDecompose` replicates the decompose{stats} functionality implemented
 in R.
 
 

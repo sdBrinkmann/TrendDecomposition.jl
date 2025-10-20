@@ -4,7 +4,7 @@
 The name rolling average instead of moving average is choosen here, because by
 default the functions works like a rolling window that slides through the 
 entire time series from ``t = 1,...,T``, calculating a value for each datum and 
-it is up to the user to deceide to have the boundary values discarded. 
+it is up to the user to decide to have the boundary values discarded. 
 
 For centered MA the choosen order p has to be odd and thus can be written
 as ``p = 2k + 1`` so that
@@ -93,7 +93,7 @@ maSeason
 ## Classical decomposition
 
 Given the implementations of [`maSeason`](@ref) and [`rollingAverage`](@ref),
-the following two decompositions using moving averages can be archived: 
+the following two decompositions using moving averages can be achieved: 
 
 The additive model
 ```math 

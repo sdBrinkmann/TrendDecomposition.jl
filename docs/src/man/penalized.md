@@ -3,7 +3,7 @@
 The term penalized smoothing here denotes a class of smoothers  that minimize a criterion 
 subject to a penalizing term. The methods
 introduced here are in fact one of the earliest uses in statistics of a 
-penalizing term first introduced in 1898 by George Bohlmann[^Bohl99] and its 
+penalizing term first introduced in 1898 by George Bohlmann[^Bohl99] and it is
 the first smoothing procedure posed as an optimization problem. 
 
 [^Bohl99]:
@@ -18,7 +18,7 @@ The criterion we want to minimize is the squared difference between the
 trend component and the corresponding data point ``(y_t - \tau_t)^2``.
 
 For the penalizing term we differentiate between the traditionally used ``l_2``
-norm and more novel approaches using the ``l_1`` norm similar to L1 and L2 regularization in regression analysis. 
+norm and more novel approaches using the ``l_1`` norm, similar to L1 and L2 regularization in regression analysis. 
 
 
 ## Whittaker-Henderson Smoothing
@@ -78,14 +78,14 @@ is akin to ``L_2``-boosting in machine learning, hence the method is called boos
 [^PhilShi21]:
 	> Phillips, P.C.B. and Shi, Z. (2021), BOOSTING: WHY YOU CAN USE THE HP FILTER. International Economic Review, 62: 521-570.
 
-`hpFilter(x::Vector, λ::Real, iter::Int)` allows the repeated application of the HP filter by a fixed ammount of times determind by the parameter `iter`.
+`hpFilter(x::Vector, λ::Real, iter::Int)` allows the repeated application of the HP filter by a fixed amount of times determind by the parameter `iter`.
 
 ```@docs
 hpFilter(x::Vector, λ::Real, iter::Int)
 ```
 
 `bhpFilter` implements an iterative approach, where a stopping criterion determines
-the ammout of iterations.
+the amout of iterations.
 
 ```@docs
 bhpFilter

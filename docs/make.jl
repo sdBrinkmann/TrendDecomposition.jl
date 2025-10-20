@@ -3,6 +3,10 @@ using Documenter, TrendDecomposition
 makedocs(
     sitename = "TrendDecomposition",
     modules = [TrendDecomposition],
+format = Documenter.HTML(
+    canonical = "https://sdbrinkmann.github.io/TrendDecomposition.jl/stable/",
+    footer = "© 2025 Stefan D. Brinkmann",
+    ),
     pages = [
 	"Introduction" => "index.md",
 	"Get Started" => "man/start.md",
