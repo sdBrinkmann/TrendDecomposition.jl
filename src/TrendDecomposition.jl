@@ -9,6 +9,8 @@ using Optim
 include("HPFilter.jl")
 include("movingAverages.jl")
 include("expSmoothing.jl")
+include("l1TrendFilter.jl")
+
 greet() = print("Hello World!")
 
 export
@@ -21,7 +23,8 @@ export
     expSmoothing,
     brownLinear,
     holtLinear,
-    holtWinters
-    
+    holtWinters,
+    trendL1Filter,
+    trendADMM
 
 end # module

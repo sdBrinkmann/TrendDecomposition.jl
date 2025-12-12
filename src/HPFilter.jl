@@ -116,11 +116,19 @@ function difference_coeff(m :: Int)
     float.([binomial(m, d) * (-1)^d for d in 0:m])
 end
 
-
+#=
 function difference_matrix(n :: Int, m :: Int)
     spdiagm(n, n-m, (0:-1:-m .=> fill.(difference_coeff(m), n-m))...)
 end
+=#
 
+function difference_matrix(n :: Int, m :: Int; full = false)
+    if full
+        spdiagm(n, n, (0:-1:-m .=> fill.(difference_coeff(m), n-m))...)
+    else
+        spdiagm(n, n-m, (0:-1:-m .=> fill.(difference_coeff(m), n-m))...)
+    end
+end
 
 """
     bohlmannFilter(x :: Vector, m :: Int, λ :: Real)

@@ -10,11 +10,20 @@ Optim = "429524aa-4258-5aef-a3af-852621145aeb"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
+[weakdeps]
+Convex = "f65535da-76fb-5f13-bab9-19810c17039a"
+SCS = "c946c3f1-0d1f-5ce8-9dea-7daa1f7e2d13"
+
+[extensions]
+L1MethodsExt = ["Convex", "SCS"]
+
 [compat]
+Convex = "0.16"
 Distributions = "0.25"
 HypothesisTests = "0.11"
 LinearAlgebra = "1.11"
 Optim = "1.13.2"
+SCS = "2.4"
 SparseArrays = "1.11"
 Statistics = "1.11"
 Test = "1.11"

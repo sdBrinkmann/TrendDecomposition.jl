@@ -13,7 +13,10 @@ format = Documenter.HTML(
         "Moving Average" => "man/moving.md",
         "Penalized Smoothing" => "man/penalized.md",
         "Exponential Smoothing" => "man/exponential.md",
-	"API" => "man/api.md",
+	"API" => [
+            "Miscellaneous" => "man/misc.md",
+            "Index" => "man/api.md",
+            ],
     ]	
 )
 
