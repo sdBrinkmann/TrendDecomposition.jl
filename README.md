@@ -45,12 +45,17 @@ julia> using TrendDecomposition
 ```
 
 The developing branch of this package can either be employed  by cloning this repository or by using the Julia package manager.
-With the package manager simply use the add command:
+With the package manager simply use the dev instead the add command:
+```Julia
+@(v1.11) pkg> dev TrendDecomposition
+```
+
+For the developing branch one can alternatily try with add to fetch from the repository:
 ```Julia
 @(v1.11) pkg> add https://github.com/sdBrinkmann/TrendDecomposition.jl
 ```
 > [!IMPORTANT]
-> This package is currently under rapid development and follows Semantic Versioning. Until the 1.0.0 release is reached,
+> This package is currently under development and follows Semantic Versioning. Until the 1.0.0 release is reached,
 >  the API of this package can change with any minor version update, 
 > please  consult the documentation of this package after each update when using this package.
 

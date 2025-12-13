@@ -10,6 +10,7 @@ include("HPFilter.jl")
 include("movingAverages.jl")
 include("expSmoothing.jl")
 include("l1TrendFilter.jl")
+include("tautString.jl")
 
 greet() = print("Hello World!")
 
@@ -25,6 +26,10 @@ export
     holtLinear,
     holtWinters,
     trendL1Filter,
-    trendADMM
+    trendADMM,
+    tautADMM,
+    tautStringFit,
+    greatestConvexMinorant,
+    leastConcaveMajorant
 
 end # module

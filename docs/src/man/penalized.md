@@ -92,3 +92,13 @@ bhpFilter
 ```
 
 # ``l_1`` Trend Filtering
+
+## Taut String - Piecewise constant 
+
+```@docs
+tautStringFit
+```
+
+```@docs
+tautADMM
+```
