@@ -10,44 +10,69 @@ Returns (string, (x, y)) with string being the fitted taut string and
 the x and y coordinates of the knots. 
 
 """
-function tautStringFit(y :: Vector, C :: Real)
+function tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
 
     n :: Int = length(y)
-    y_integrated = vcat(0, cumsum(y) ./ n)
+    y_integrated = vcat(0, cumsum(y))  #./ n)
     
-    lower = y_integrated .- (C / sqrt(n))
-    upper = y_integrated .+ (C / sqrt(n))
+    lower = y_integrated .- (C ) #/ sqrt(n))
+    upper = y_integrated .+ (C ) # / sqrt(n))
 
+    if optimize == true       
+        p = Array{Array}(undef, 5)
+        k = Array{Array}(undef, 5)
+        strings = Array{Array}(undef, 5)
+        criterions = Array{Float64}(undef, 5)
 
-    p1, k1 = tautString(lower, upper, C, lower[1], lower[n])
+        sVal = [lower[1], lower[1], upper[1], upper[1], (upper[1]+lower[1]) / 2]
+        eVal = [lower[n+1], upper[n+1], lower[n+1], upper[n+1], (upper[n+1] + lower[n+1]) / 2]
 
-    #= Optimization not yet implemented
-    p2, k2 = tautString(lower, upper, C, lower[1], upper[n])
-    p3, k3 = tautString(lower, upper, C, upper[1], lower[n])
-    p4, k4 = tautString(lower, upper, C, upper[1], upper[n])
-    =#
+        Threads.@threads for i in 1:5
+            p[i], k[i] = tautString(lower, upper, C, sVal[i], eVal[i])
+            strings[i] = stringify(p[i], k[i], n)
+            criterions[i] = criterion(y, strings[i], C)
+        end
 
-    string = Vector{Float64}(undef, n)
-
-    no_knots = length(p1)
-
-    x_range = range(0, 1, (n+1))
-
- 
-    factor = 1 / n
-    
-      for i in 1:(no_knots-1)
-        slope = (k1[i+1] - k1[i]) / ((p1[i+1] - p1[i]) * factor)
-        string[p1[i]:(p1[i+1]-1)] .= slope
-
+        m = argmin(criterions)
+        
+        return (strings[m], (p[m], k[m]))
+    else
+        p, k = tautString(lower, upper, C, (upper[1]+lower[1]) / 2,
+                                (upper[n+1] + lower[n+1]) / 2)
+        string = stringify(p, k, n)
+        return (string, (p, k))
     end
-
-    
-    return (string, (p1, k1))
 end
 
+criterion(y, τ, λ) = sum((y .- τ).^2) + λ * sum(τ[2:end] .- τ[1:(end-1)])
+
+#=
+c = criterion(y, string, 1)
+c2 = criterion(y, string2, 1)
+c3 = criterion(y, string3, 1)
+c4 = criterion(y, string4, 1)
+c5  = criterion(y, string5, 1)
+=#
+function stringify(p, k, len)
+    string = Vector{Float64}(undef, len)
+
+    no_knots = length(p)
+
+    #x_range = range(0, 1, (n+1))
+
+    
+    #factor = 1 / len
+    
+    for i in 1:(no_knots-1)
+        slope = (k[i+1] - k[i]) / ((p[i+1] - p[i]) ) #* factor)
+        string[p[i]:(p[i+1]-1)] .= slope
+
+    end
+    return string 
+end
 
 function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: Real, endValue :: Real)     
+
     n :: Int = length(lower)
     
     #lower[1] = upper[1] = startValue
@@ -55,24 +80,23 @@ function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: R
 
     u_knots = zeros(n)
     l_knots = zeros(n)
-    s_knots = zeros(n)
 
     u_points = ones(Int, n)
     l_points = ones(Int, n)
-    s_points = ones(Int, n)
 
-    u_knots[1] = l_knots[1] = s_knots[1] = startValue   #lower[1]
+    s_points = [1]
     
+    u_knots[1] = l_knots[1] = startValue   #lower[1]
+    s_knots = [startValue] 
     u_last :: Int = l_last :: Int = 1
     u_index :: Int = l_index :: Int = 1
 
-    s_index :: Int = 1
 
     u_base :: Int = l_base :: Int = 0
     
     i :: Int = 2
 
-    while i < n
+    while i <= n
         
         if u_index < i
             u_index +=1
@@ -96,13 +120,12 @@ function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: R
             ((l_knots[2+l_base] - l_knots[1+l_base]) / (l_points[2+l_base] - l_points[1+l_base]))
             i += 1
         else
-            s_index += 1
             ux :: Int = 2 + u_base
             lx :: Int = 2 + l_base
             #println("$i: false, $(u_points[ux]) $(l_points[lx])")
-            if u_points[ux] < l_points[lx]
-                s_knots[s_index] = u_knots[ux]
-                s_points[s_index] = u_points[ux]
+            if u_points[ux] <= l_points[lx]
+                push!(s_knots, u_knots[ux])
+                push!(s_points, u_points[ux])
                 i = u_points[ux] + 1
                 l_last = 1
                 l_index = u_points[ux]
@@ -114,8 +137,8 @@ function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: R
                 u_base += 1
                 l_base = 0
             else
-                s_knots[s_index] = l_knots[lx]
-                s_points[s_index] = l_points[lx]
+                push!(s_knots, l_knots[lx])
+                push!(s_points, l_points[lx])
                 i = l_points[lx] + 1
 
                 u_last = 1
@@ -129,21 +152,26 @@ function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: R
                 u_base = 0
                 
             end
-            
+            i += 1
         end
+    end # end while
+    
+    if s_points[end] == n
+        println("s_points[end] == n")
+        push!(s_knots, endValue)
+    else
+        push!(s_points, n)
+        push!(s_knots, endValue) #lower[n]
     end
-
-    s_index += 1
-    s_points[s_index] = n
-    s_knots[s_index] = lower[n]
-    return (s_points[1:s_index], s_knots[1:s_index])
+    return (s_points, s_knots)
 end
 
 
 
 ## Equidistant pool
 
-function pool!(compare :: Function, knots :: AbstractVector, points :: AbstractVector, last :: Int, x :: Real, y :: Real)
+function pool!(compare :: Function, knots :: AbstractVector, points :: AbstractVector,
+               last :: Int, x :: Real, y :: Real)
     if last == 1
         knots[2] = y
         points[2] = x

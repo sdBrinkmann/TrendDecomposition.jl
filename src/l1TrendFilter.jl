@@ -29,7 +29,7 @@ otherwise algorithm iterates max_iter times.
 The function returns the estimated trend component.
 
 """
-function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, criterion = true)
+function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, ρ=λ)
     n = length(y) 
     z = zeros(n)
     u = zeros(n)
@@ -49,7 +49,7 @@ function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, criterion = t
     ϵ_rel = 1.e-2
     
     D = difference_matrix(n, m, full=true)
-    ρ = λ
+    #ρ = λ
 
     DD = D * D'
 
@@ -63,6 +63,8 @@ function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, criterion = t
         u = u + z - D' * τ
 
         # Test Stop criterion
+
+        #=
         r_norm = sqrt(sum((z - D'* τ).^2))
         #println("z: $z,    z_old: $z_prv")
         s_norm = sqrt(sum((ρ * D' * (z - z_prv)).^2))
@@ -71,12 +73,13 @@ function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, criterion = t
         ϵ_dual = sqrt(n) * ϵ_abs + ϵ_rel * norm(ρ * D * u)
 
         #println("$i    $r_norm    $ϵ_primal    $s_norm    $ϵ_dual")
-        
+     
         if criterion && (r_norm < ϵ_primal  && s_norm < ϵ_dual)
             println("Stopping criterion met at iteration $i")
             stopped = true
             break
-        end       
+        end
+        =#
     end
 
     if stopped == false
@@ -116,7 +119,7 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
     end
     
     if m == 1
-        string, _ = tautStringFit(y, λ / ρ)
+        string, _ = tautStringFit(y, λ, optimize=true)
         return string
     else
         m -= 1
@@ -134,7 +137,7 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
         τ = (I + ρ * DD) \ (y + ρ * D * (z + u))
 
         z_prv = z
-        z, _ = tautStringFit(D'*τ - u, λ / ρ * 0.1)
+        z, _ = tautStringFit(D'*τ - u, λ / ρ, optimize=true)
         #println(D'*τ - u)
         
         u = u + z - D' * τ
@@ -148,12 +151,12 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
         ϵ_dual = sqrt(n) * ϵ_abs + ϵ_rel * norm(ρ * D * u)
 
         #println("$i    $r_norm    $ϵ_primal    $s_norm    $ϵ_dual")
-        
+        #=
         if (r_norm < ϵ_primal  && s_norm < ϵ_dual)
             println("stop criterion met at $i")
             break
         end
-      
+        =#
     end
     return τ
 end
