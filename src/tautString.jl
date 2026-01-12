@@ -1,13 +1,13 @@
 
 
 """
-    tautStringFit(y :: Vector, C :: Real)
+    tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
 
 Computes the taut string for time series y where C determines the diameter of
 the tube.
 
 Returns (string, (x, y)) with string being the fitted taut string and
-the x and y coordinates of the knots. 
+the x and y coordinates of the knots.
 
 """
 function tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
@@ -26,15 +26,16 @@ function tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
 
         sVal = [lower[1], lower[1], upper[1], upper[1], (upper[1]+lower[1]) / 2]
         eVal = [lower[n+1], upper[n+1], lower[n+1], upper[n+1], (upper[n+1] + lower[n+1]) / 2]
+          
 
         Threads.@threads for i in 1:5
             p[i], k[i] = tautString(lower, upper, C, sVal[i], eVal[i])
             strings[i] = stringify(p[i], k[i], n)
             criterions[i] = criterion(y, strings[i], C)
         end
-
+        #println("Criterions: ", criterions)
         m = argmin(criterions)
-        
+        #println("Chosen: $(m)")
         return (strings[m], (p[m], k[m]))
     else
         p, k = tautString(lower, upper, C, (upper[1]+lower[1]) / 2,
@@ -44,15 +45,9 @@ function tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
     end
 end
 
-criterion(y, τ, λ) = sum((y .- τ).^2) + λ * sum(τ[2:end] .- τ[1:(end-1)])
+criterion(y, τ, λ) = sum((y .- τ).^2) + λ * sum(abs.(τ[2:end] .- τ[1:(end-1)]))
 
-#=
-c = criterion(y, string, 1)
-c2 = criterion(y, string2, 1)
-c3 = criterion(y, string3, 1)
-c4 = criterion(y, string4, 1)
-c5  = criterion(y, string5, 1)
-=#
+
 function stringify(p, k, len)
     string = Vector{Float64}(undef, len)
 
@@ -71,15 +66,15 @@ function stringify(p, k, len)
     return string 
 end
 
-function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: Real, endValue :: Real)     
+function tautString(lower :: Vector, upper :: Vector, C :: Float64, startValue :: Float64, endValue :: Float64)     
 
     n :: Int = length(lower)
     
     #lower[1] = upper[1] = startValue
     #lower[n] = upper[n] = endValue
 
-    u_knots = zeros(n)
-    l_knots = zeros(n)
+    u_knots = zeros(Float64, n)
+    l_knots = zeros(Float64, n)
 
     u_points = ones(Int, n)
     l_points = ones(Int, n)
@@ -123,7 +118,7 @@ function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: R
             ux :: Int = 2 + u_base
             lx :: Int = 2 + l_base
             #println("$i: false, $(u_points[ux]) $(l_points[lx])")
-            if u_points[ux] <= l_points[lx]
+            if u_points[ux] < l_points[lx]
                 push!(s_knots, u_knots[ux])
                 push!(s_points, u_points[ux])
                 i = u_points[ux] + 1
@@ -152,7 +147,6 @@ function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: R
                 u_base = 0
                 
             end
-            i += 1
         end
     end # end while
     

@@ -25,5 +25,9 @@ trendADMM
 ```
 
 ```@docs
+fusedADMM
+```
+
+```@docs
 trendL1Filter
 ```

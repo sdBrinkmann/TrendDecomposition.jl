@@ -3,7 +3,7 @@
 
 
 
-function softThreshold(a, κ)
+function softThreshold(a :: Float64, κ :: Float64)
     if a > κ
         return (a - κ)
     elseif a < -κ
@@ -23,17 +23,14 @@ and using the m'th difference.
 The estimation procedure uses the Alternating Direction Method of Multipliers (ADMM) to
 reach a numerical solution.
 
-If criterion = true the function stop when reaching a criterion's stopping condition,
-otherwise algorithm iterates max_iter times.
-
 The function returns the estimated trend component.
 
 """
-function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, ρ=λ)
+function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, ρ::Real=λ)
     n = length(y) 
-    z = zeros(n)
-    u = zeros(n)
-    τ = zeros(n)
+    z = zeros(Float64, n)
+    u = zeros(Float64, n)
+    τ = zeros(Float64, n)
 
     if λ < 0
         throw(DomainError(λ, "Only positive values can be used for λ"))
@@ -41,9 +38,8 @@ function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, ρ=λ)
         throw(DomainError(max_iter, "max_iter must be positive"))        
     end
 
+    ρ = Float64(ρ)
     
-    
-    stopped = false
     
     ϵ_abs = 1.e-4
     ϵ_rel = 1.e-2
@@ -64,7 +60,7 @@ function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, ρ=λ)
 
         # Test Stop criterion
 
-        #=
+        
         r_norm = sqrt(sum((z - D'* τ).^2))
         #println("z: $z,    z_old: $z_prv")
         s_norm = sqrt(sum((ρ * D' * (z - z_prv)).^2))
@@ -74,17 +70,15 @@ function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, ρ=λ)
 
         #println("$i    $r_norm    $ϵ_primal    $s_norm    $ϵ_dual")
      
-        if criterion && (r_norm < ϵ_primal  && s_norm < ϵ_dual)
-            println("Stopping criterion met at iteration $i")
-            stopped = true
-            break
+        if r_norm < ϵ_primal  && s_norm < ϵ_dual
+            println("Stop criterion met at iteration $i")
+            return τ
         end
-        =#
+        
     end
 
-    if stopped == false
-        println("Stop criterion was not reached, stopped after max iterations $(max_iter)")
-    end
+    println("Stop criterion was not reached, stopped after max iterations $(max_iter)")
+
     
     return τ
 end
@@ -96,19 +90,17 @@ end
 Trend filtering of time series data y by using the L1 penalty with regularization parameter λ
 and using the m'th difference.
 The estimation procedure uses the Alternating Direction Method of Multipliers (ADMM) in combination
-with taut string algorithm to reach a numerical solution. For m = 1 only the taut string algorithm
+with the taut string algorithm to reach a numerical solution. For m = 1 only the taut string algorithm
 is used as an edge case solution. 
 
-If criterion = true the function stop when reaching a criterion's stopping condition,
-otherwise algorithm iterates max_iter times.
 
 The function returns the estimated trend component.
 """
-function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
+function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ::Real=λ)
     n = length(y) 
-    z = zeros(n)
-    u = zeros(n)
-    τ = zeros(n)
+    z = zeros(Float64, n)
+    u = zeros(Float64, n)
+    τ = zeros(Float64, n)
 
     if λ < 0
         throw(DomainError(λ, "Only positive values can be used for λ"))
@@ -124,12 +116,13 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
     else
         m -= 1
     end
+
+    ρ = Float64(ρ)
     
     ϵ_abs = 1.e-4
     ϵ_rel = 1.e-2
     
     D = difference_matrix(n, m, full=true)
-    #ρ = λ
 
     DD = D * D'
 
@@ -137,7 +130,7 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
         τ = (I + ρ * DD) \ (y + ρ * D * (z + u))
 
         z_prv = z
-        z, _ = tautStringFit(D'*τ - u, λ / ρ, optimize=true)
+        z, _ = tautStringFit(D'*τ - u, λ / ρ, optimize=false)
         #println(D'*τ - u)
         
         u = u + z - D' * τ
@@ -151,13 +144,16 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
         ϵ_dual = sqrt(n) * ϵ_abs + ϵ_rel * norm(ρ * D * u)
 
         #println("$i    $r_norm    $ϵ_primal    $s_norm    $ϵ_dual")
-        #=
+        
         if (r_norm < ϵ_primal  && s_norm < ϵ_dual)
-            println("stop criterion met at $i")
-            break
+            println("Stop criterion met at $i")
+            return τ
         end
-        =#
+        
     end
+
+    println("Stop criterion was not reached, stopped after max iterations $(max_iter)")
+    
     return τ
 end
 
@@ -175,5 +171,14 @@ L1 trend filter.
 """
 function trendL1Filter() end
 
+
+
     
 
+"""
+    fusedADMM()
+
+Placeholder for FusedADMM extension, when using TrendDecomposition together with Lasso.jl package.
+
+"""
+function fusedADMM() end

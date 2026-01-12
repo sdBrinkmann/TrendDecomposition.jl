@@ -28,6 +28,7 @@ export
     trendL1Filter,
     trendADMM,
     tautADMM,
+    fusedADMM,
     tautStringFit,
     greatestConvexMinorant,
     leastConcaveMajorant
