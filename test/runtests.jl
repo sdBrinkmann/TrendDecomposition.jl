@@ -110,8 +110,14 @@ end
     @test holtLinear(y, .5, 0.0, φ = 0.8)[2][3, 2] == (y[2] - y[1]) * 0.8  
 end
 
-
-
+@testset "expSmooth" begin
+    sm = expSmoothing([1, 2, 3], 0.5)
+    cal = ones(3)
+    cal[1] = 0.5
+    cal[2] = 0.5 * cal[1] + 0.5 * 2
+    cal[3] = 0.5 * cal[2] + 0.5 * 3
+    @test cal == sm
+end
 
 @testset "EWMA forecasting" begin
     f = holtLinear(y, .84, .84, h = 4) 
