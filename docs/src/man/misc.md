@@ -20,13 +20,6 @@ leastConcaveMajorant(y :: Vector)
 
 Here are functions that are only experimental in use but could be useful for some specific purposes.
 
-```@docs
-trendADMM
-```
-
-```@docs
-fusedADMM
-```
 
 ```@docs
 trendL1Filter

@@ -25,6 +25,7 @@ function tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
         criterions = Array{Float64}(undef, 5)
 
         sVal = [lower[1], lower[1], upper[1], upper[1], (upper[1]+lower[1]) / 2]
+        sVal = [0., 0., 0., 0., 0., 0.]
         eVal = [lower[n+1], upper[n+1], lower[n+1], upper[n+1], (upper[n+1] + lower[n+1]) / 2]
           
 
@@ -147,6 +148,7 @@ function tautString(lower :: Vector, upper :: Vector, C :: Float64, startValue :
                 u_base = 0
                 
             end
+            #i += 1
         end
     end # end while
     

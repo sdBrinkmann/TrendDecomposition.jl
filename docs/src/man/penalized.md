@@ -95,10 +95,74 @@ bhpFilter
 
 ## Taut String - Piecewise constant 
 
+The taut string algorithm by Davies and Kovac (2001)[^DaKo01] can be seen as an efficient O(n) solution to the following minimization problem:
+
+[^DaKo01]:
+	> Davies, P. L., & Kovac, A. (2001). Local extremes, runs, strings and multiresolution. The Annals of Statistics, 29(1), 1-65
+
+```math
+\^\tau_t = 	\operatorname*{arg\,min}_\tau \Bigg\{ \sum_{t=1}^{n} (y_t - \tau_t)^2 + \lambda \sum_{t=m+1}^{n} |\tau_t - \tau_{t-1}|\Bigg\},
+```
+
+where ``\tau`` is again the trend component. The result is a piecewise constant function and it
+can be shown that is uses the smallest number of knots.
+
+Alternatively, using the term total variation (TV) of a function f the taut string approach minimizes
+following function:
+
+```math
+ \sum_{t=1}^{n} (y_t - f(x_t))^2 + \lambda TV(f),
+```
+also known as total variation regularization or denoising.
+
+Instead of the parameter ``\lambda``, the parameter ``C`` is used to determine the radius of the tube,
+in the taut string method, but in practise ``C`` is equivalent to the parameter ``\lambda`` in the
+alternative estimation methods below (ADMM and fused Lasso).
+
 ```@docs
 tautStringFit
 ```
 
+This function implements a suggestion by the authors of the algorithm to vary the starting and end points in order to find the best fit. With `optimize = true` various end point are tested and the best outcome is choosen. This is a pure experimental feature. Run julia with `julia --threads 5` to take advantage of multi-threading. 
+
+## Alternative Direction Method of Multipliers (ADMM)
+
+To use ADMM as a solution to the total variation minimization was proposed by Boyd et al. (2011)[^Boyd11]
+
+[^Boyd11]:
+	> Boyd, S., Neal, P., Eric, C., Borja, P., & Jonathan, E. (2011). Distributed optimization and statistical learning via the alternating direction method of multipliers. Foundations and Trends® in Machine learning, 3(1), 1-122.
+
+and is here implemented as general solver for any order of trend filtering. 
+
+```@docs 
+trendADMM
+```
+
+### Alternatives to Soft Thresholding
+
+Ramas and Tibshirani (2016)[^RaTi12] proposed using the fused Lasso instead of soft thresholding to archieve faster convergence and a more numerical robust solution. A second alternative is offered here using the taut string algorithm instead of the fused Lasso.
+
+[^RaTi12]:
+	> Ramdas, A., & Tibshirani, R. J. (2016). Fast and flexible ADMM algorithms for trend filtering. Journal of Computational and Graphical Statistics, 25(3), 839-858
+
+
+#### Taut String
+
 ```@docs
 tautADMM
 ```
+
+In the same vein as with `tautStringFit` above, here `opt=true` can be used to experiment with various 
+end points in the taut string algorithm.
+
+#### Fused Lasso
+This function is offered as an extension for the package Lasso.jl. Please use with `using Lasso`.
+```@docs
+fusedADMM
+```
+
+
+### Note on augmented Lagrangian parameter ρ
+
+Using ADMM with soft-thresholding or taut string the augmented Lagrangian parameter ``\rho`` (written
+as `\rho<TAB>`) can be tuned to archieve a faster convergence in practise. As a parameter for the subroutine using either soft-thresholding or taut string ``\lambda / \rho`` is used with ``\rho = \lambda`` as default (same default for fused Lasso). Using a ``\rho`` greater than or rather a multiple of ``\lambda`` can increase the convergence rate significantly. 

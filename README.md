@@ -27,6 +27,11 @@ The following is a list of already implemented and documented methods:
   - Bohlmann Filter / Whittaker-Henderson Smoothing
   - Leser / Hodrick-Prescott (HP) Filter
   - Boosted HP Filter
+  - Taut string - piecewise constant / Total variation denoising
+  - L1 trend filtering with ADMM
+  - L1 trend filtering with ADMM using taut string
+  - L1 trend filtering with ADMM using fused Lasso
+
   
 - Moving Average (MA)
 - Seasonal Average

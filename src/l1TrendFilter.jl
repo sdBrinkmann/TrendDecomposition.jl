@@ -16,7 +16,7 @@ end
 
 
 """
-    trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, criterion = true)
+    trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ)
 
 Trend filtering of time series data y by using the L1 penalty with regularization parameter λ
 and using the m'th difference.
@@ -26,7 +26,7 @@ reach a numerical solution.
 The function returns the estimated trend component.
 
 """
-function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 100, ρ::Real=λ)
+function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ)
     n = length(y) 
     z = zeros(Float64, n)
     u = zeros(Float64, n)
@@ -85,7 +85,7 @@ end
 
 
 """
-    tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
+    tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000,  ρ::Real=λ, opt::Bool = false)
 
 Trend filtering of time series data y by using the L1 penalty with regularization parameter λ
 and using the m'th difference.
@@ -96,7 +96,7 @@ is used as an edge case solution.
 
 The function returns the estimated trend component.
 """
-function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ::Real=λ)
+function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ, opt::Bool = false)
     n = length(y) 
     z = zeros(Float64, n)
     u = zeros(Float64, n)
@@ -130,7 +130,7 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ::Real=λ)
         τ = (I + ρ * DD) \ (y + ρ * D * (z + u))
 
         z_prv = z
-        z, _ = tautStringFit(D'*τ - u, λ / ρ, optimize=false)
+        z, _ = tautStringFit(D'*τ - u, λ / ρ, optimize=opt)
         #println(D'*τ - u)
         
         u = u + z - D' * τ
@@ -176,7 +176,7 @@ function trendL1Filter() end
     
 
 """
-    fusedADMM()
+    fusedADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
 
 Placeholder for FusedADMM extension, when using TrendDecomposition together with Lasso.jl package.
 
