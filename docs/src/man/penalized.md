@@ -115,7 +115,7 @@ following function:
 ```
 also known as total variation regularization or denoising.
 
-Instead of the parameter ``\lambda``, the parameter ``C`` is used to determine the radius of the tube,
+Instead of the parameter ``\lambda``, the parameter ``C`` is used to determine the radius of the tube
 in the taut string method, but in practise ``C`` is equivalent to the parameter ``\lambda`` in the
 alternative estimation methods below (ADMM and fused Lasso).
 
@@ -127,20 +127,20 @@ This function implements a suggestion by the authors of the algorithm to vary th
 
 ## Alternative Direction Method of Multipliers (ADMM)
 
-To use ADMM as a solution to the total variation minimization was proposed by Boyd et al. (2011)[^Boyd11]
+To use ADMM as a solution method to total variation minimization was proposed by Boyd et al. (2011)[^Boyd11]
 
 [^Boyd11]:
 	> Boyd, S., Neal, P., Eric, C., Borja, P., & Jonathan, E. (2011). Distributed optimization and statistical learning via the alternating direction method of multipliers. Foundations and Trends® in Machine learning, 3(1), 1-122.
 
-and is here implemented as general solver for any order of trend filtering. 
+and is here implemented as a general solver for any order of l1 trend filtering. 
 
 ```@docs 
 trendADMM
 ```
 
-### Alternatives to Soft Thresholding
+### Alternatives to Soft-Thresholding
 
-Ramas and Tibshirani (2016)[^RaTi12] proposed using the fused Lasso instead of soft thresholding to archieve faster convergence and a more numerical robust solution. A second alternative is offered here using the taut string algorithm instead of the fused Lasso.
+Ramas and Tibshirani (2016)[^RaTi12] proposed using the fused Lasso instead of soft-thresholding to archieve faster convergence and a more numerical robust solution. A second alternative is offered here using the taut string algorithm instead of the fused Lasso.
 
 [^RaTi12]:
 	> Ramdas, A., & Tibshirani, R. J. (2016). Fast and flexible ADMM algorithms for trend filtering. Journal of Computational and Graphical Statistics, 25(3), 839-858

@@ -55,7 +55,7 @@ With the package manager simply use the dev instead the add command:
 @(v1.11) pkg> dev TrendDecomposition
 ```
 
-For the developing branch one can alternatily try with add to fetch from the repository:
+For the developing branch one can alternatively try with add to fetch from the repository:
 ```Julia
 @(v1.11) pkg> add https://github.com/sdBrinkmann/TrendDecomposition.jl
 ```

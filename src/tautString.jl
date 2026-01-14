@@ -3,7 +3,7 @@
 """
     tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
 
-Computes the taut string for time series y where C determines the diameter of
+Computes the taut string for time series y where C determines the radius of
 the tube.
 
 Returns (string, (x, y)) with string being the fitted taut string and
@@ -13,7 +13,7 @@ the x and y coordinates of the knots.
 function tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
 
     n :: Int = length(y)
-    y_integrated = vcat(0, cumsum(y))  #./ n)
+    y_integrated = vcat(0., cumsum(y))  #./ n)
     
     lower = y_integrated .- (C ) #/ sqrt(n))
     upper = y_integrated .+ (C ) # / sqrt(n))
@@ -67,7 +67,7 @@ function stringify(p, k, len)
     return string 
 end
 
-function tautString(lower :: Vector, upper :: Vector, C :: Float64, startValue :: Float64, endValue :: Float64)     
+function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: Float64, endValue :: Float64)     
 
     n :: Int = length(lower)
     

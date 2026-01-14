@@ -1,4 +1,4 @@
-# Get Started
+# How to add package
 
 This package is now featured on the official general Julia package registry. 
 Simply use Julia's package manager pkg to add TrendDecomposition to your preferred environment.
@@ -14,12 +14,23 @@ With the package manager simply use the add command:
 ```Julia
 @(v1.11) pkg> add https://github.com/sdBrinkmann/TrendDecomposition.jl
 ```
+
+For the developing branch one can alternatively try with add to fetch from the repository:
+```Julia
+@(v1.11) pkg> add https://github.com/sdBrinkmann/TrendDecomposition.jl
+```
+
 !!! warning 
 	This package is currently under development and follows Semantic Versioning. Until the 1.0.0 release is reached,
 	the API of this package can change with any minor version update, 
 	please  consult the documentation of this package after each update when using this package.
 
 # Usage
+
+Below are serveral examples which demonstrate typical usecases of various functions contained in 
+TrendDecomposition.jl. 
+
+## Hodrick-Prescott Filter
 
 The basic usage of trend estimation using the Hodrick-Prescott filter is demonstrated with the [US industrial production index (IPI)](https://fred.stlouisfed.org/series/IPB50001SQ) provided by FRED data service.
 
@@ -123,3 +134,22 @@ plot(data, color=:black, legend=false, title="HW forecast h=24")
 plot!(steps, f2[(end-23):end], color=:red, label="forecast")
 ```
 ![HW forecasting](../assets/airforecast24.png)
+
+
+## Taut String
+
+Taut string is a efficient ``O(n)`` algorithm for total variation regularization.
+
+``` Julia
+# Data from: Donoho, D. L. et al (1995) Wavelet Shrinkage: Asymptopia? Journal of the Royal Statistical Society series B, 57, 301–337. 
+
+string, (x, y) = tautStringFit(djblocks, 10)
+
+# (x, y) are coordiantes of knots
+
+plot(djblocks, label="y")
+plot!(string, label="string")
+
+```
+
+![Taut String](../assets/djblocks.png)
