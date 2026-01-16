@@ -1,4 +1,4 @@
-# How to add package
+# How to add TrendDecomposition package
 
 This package is now featured on the official general Julia package registry. 
 Simply use Julia's package manager pkg to add TrendDecomposition to your preferred environment.

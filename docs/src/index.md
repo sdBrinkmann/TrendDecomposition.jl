@@ -7,7 +7,7 @@ Welcome to the TrendDecomposition.jl documentation.
 	The package is also not feature complete until version 1.0,
 	thus sometimes there are references to not yet implemented features.
 
-TrendDecomposition.jl is a Julia package for decomposition of time series into trend and cycle components. More generally it provides 
+TrendDecomposition.jl is a Julia package for the decomposition of time series into trend and cycle components. More generally it provides 
 both (stochastic) trend component estimation and forecasting, though not all methods are suitable for forecasting.
 
 By using filters and smoothers the most pragmatic approach to trend decomposition is estimating the trend $t$ and defining
@@ -37,3 +37,6 @@ The following is a list of already implemented and documented methods:
 - Moving Average (MA)
 - Seasonal Average
 - Classical Decomposition by moving averages
+
+Examples, which demonstrate the usecase of some of the implemented methods, can be found
+in the [Usage](@ref) section. 

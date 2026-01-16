@@ -19,9 +19,9 @@ The function returns the estimated trend component.
 """
 function TrendDecomposition.fusedADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
     n = length(y) 
-    z = zeros(n)
-    u = zeros(n)
-    τ = zeros(n)
+    z = zeros(Float64, n)
+    u = zeros(Float64, n)
+    τ = zeros(Float64, n)
 
     if λ < 0
         throw(DomainError(λ, "Only positive values can be used for λ"))
@@ -29,6 +29,8 @@ function TrendDecomposition.fusedADMM(y :: Vector, λ :: Real; m = 2, max_iter =
         throw(DomainError(max_iter, "max_iter must be positive"))
     elseif m < 1
         throw(DomainError(m, "Order of differentation must be greater than 0"))
+    elseif ρ < 0
+        throw(DomainError(ρ, "Only values greater equal 0 can be used for ρ"))
     end
     
     if m == 1

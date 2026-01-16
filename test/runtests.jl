@@ -1,6 +1,7 @@
 println("Testing...")
 
 using Random, Distributions, Statistics, Test
+using Lasso
 using TrendDecomposition
 
 Random.seed!(7886)
@@ -189,3 +190,50 @@ end
     @test D[3:end, :] == D1[3:end, :]
 
 end
+
+
+@testset "l1TrendFiltering" begin
+    string, _ = tautStringFit(y, 100_000)
+    @test all(string .≈ mean(y))
+    #@test all(trendADMM(y, 100_000, m=1) .≈ mean(y))
+    @test all(fusedADMM(y, 100_000, m=1) .≈ mean(y))
+    @test all(string .≈ mean(y))
+    
+    te, _ = tautStringFit(y, 0)
+    @test isapprox(te, y, atol=0.001)
+    
+    a = tautStringFit(y, 100)[1]
+    b = tautADMM(y, 100, m=1)
+    @test a == b
+
+    @test tautStringFit(y, 100, optimize=true)[1] == tautADMM(y, 100, m=1, opt=true)
+
+    taut = tautADMM(y, 100, m=2)
+    res = trendADMM(y, 100, m=2)
+    fu = fusedADMM(y, 100, m=2)
+    @test isapprox(res, fu, atol=5)
+    @test isapprox(res, taut, atol=5)
+    @test isapprox(taut, fu, atol=0.01)
+
+end
+
+
+
+@testset "l1TrendFiltering DomainError" begin
+
+    @test_throws DomainError tautStringFit(y, -1)
+
+    @test_throws DomainError tautADMM(y, -1)
+    @test_throws DomainError trendADMM(y, -1)
+    @test_throws DomainError fusedADMM(y, -1)
+
+    @test_throws DomainError tautADMM(y, 1, m=0)
+    @test_throws DomainError trendADMM(y, 1, m=0)
+    @test_throws DomainError fusedADMM(y, 1, m=0)
+
+    @test_throws DomainError tautADMM(y, 1, ρ=-1)
+    @test_throws DomainError trendADMM(y, 1, ρ=-1)
+    @test_throws DomainError fusedADMM(y, 1, ρ=-1)
+end
+
+

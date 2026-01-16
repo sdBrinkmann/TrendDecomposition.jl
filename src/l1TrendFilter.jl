@@ -35,7 +35,11 @@ function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ)
     if λ < 0
         throw(DomainError(λ, "Only positive values can be used for λ"))
     elseif max_iter < 1
-        throw(DomainError(max_iter, "max_iter must be positive"))        
+        throw(DomainError(max_iter, "max_iter must be positive"))
+    elseif m < 1
+        throw(DomainError(m, "Order of differentation must be greater than 0"))
+    elseif ρ < 1.
+        throw(DomainError(ρ, "Only values greater equal 1 can be used for ρ"))
     end
 
     ρ = Float64(ρ)
@@ -108,10 +112,12 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ, 
         throw(DomainError(max_iter, "max_iter must be positive"))
     elseif m < 1
         throw(DomainError(m, "Order of differentation must be greater than 0"))
+    elseif ρ < 1.
+        throw(DomainError(ρ, "Only values greater equal 1 can be used for ρ"))
     end
     
     if m == 1
-        string, _ = tautStringFit(y, λ, optimize=true)
+        string, _ = tautStringFit(y, λ, optimize=opt)
         return string
     else
         m -= 1
@@ -161,13 +167,17 @@ end
 
 
 """
-    trendL1Filter()
+    trendL1Filter(y :: Vector, λ :: Real; m = 2, max_iter=20, method = :ADMM)
 
 Placeholder for trendL1Filter extension, when using TrendDecomposition together with other Julia packages
 like Convex.jl and SCS.jl.
 
-trendL1Filter serves as a wrapper function to enable the usage of serveral different methods in estimating
-L1 trend filter. 
+This function provides the generic use of serveral optimization methods to compute a numerical solution.
+Following methods are implmented:
+:ADMM -> alternating direction method of multipliers
+:ConvexSCS -> SCS solver with Convex.jl. Prerequisite! Import necessary modules with: using Convex, SCS
+
+The function returns the estimated trend component
 """
 function trendL1Filter() end
 
@@ -180,5 +190,13 @@ function trendL1Filter() end
 
 Placeholder for FusedADMM extension, when using TrendDecomposition together with Lasso.jl package.
 
+Trend filtering of time series data y by using the L1 penalty with regularization parameter λ
+and using the m'th difference.
+The estimation procedure uses the Alternating Direction Method of Multipliers (ADMM) in combination
+with the fused lasso algorithm from the Lasso.jl package to reach a numerical solution. For m = 1 only the taut string algorithm
+is used as an edge case solution. 
+
+
+The function returns the estimated trend component.
 """
 function fusedADMM() end

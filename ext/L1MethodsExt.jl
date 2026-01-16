@@ -6,7 +6,7 @@ using TrendDecomposition, Convex, SCS
 
 
 
-function trendConvexJL(y :: Vector, λ :: Real; m=2)
+function trendConvexSCS(y :: Vector, λ :: Real; m=2)
     n = length(y)
     D = TrendDecomposition.difference_matrix(n, m)
     τ = Variable(n)
@@ -25,7 +25,7 @@ parameter λ in application of Bohlmann Filter or Whittaker-Henderson smoothing 
 This function provides the generic use of serveral optimization methods to compute a numerical solution.
 Following methods are implmented:
 :ADMM -> alternating direction method of multipliers
-:ConvexJL -> SCS solver with Convex.jl. Prerequisite! Import necessary modules with: using Convex, SCS
+:ConvexSCS -> SCS solver with Convex.jl. Prerequisite! Import necessary modules with: using Convex, SCS
 
 The function returns the estimated trend component
 """
@@ -33,10 +33,10 @@ function TrendDecomposition.trendL1Filter(y :: Vector, λ :: Real; m = 2, max_it
 
     if method == :ADMM
         return trendADMM(y, λ, m=m, max_iter=max_iter)
-    elseif method == :ConvexJL
+    elseif method == :ConvexSCS
         return trendConvexJL(y, λ, m=m)
     else
-        println("Invalid method, valid choices as :ADMM or :ConvexJL")
+        println("Invalid method, valid choices as :ADMM or :ConvexSCS")
         return []
     end
 

@@ -12,24 +12,28 @@ the x and y coordinates of the knots.
 """
 function tautStringFit(y :: Vector, C :: Real; optimize::Bool=false)
 
-    n :: Int = length(y)
-    y_integrated = vcat(0., cumsum(y))  #./ n)
+     if C < 0
+         throw(DomainError(C, "Only positive values can be used for C"))
+     end
     
-    lower = y_integrated .- (C ) #/ sqrt(n))
-    upper = y_integrated .+ (C ) # / sqrt(n))
+    n :: Int = length(y)
+    y_integrated = vcat(0., cumsum(y)) 
+    
+    lower = y_integrated .- (C ) 
+    upper = y_integrated .+ (C ) 
 
-    if optimize == true       
-        p = Array{Array}(undef, 5)
-        k = Array{Array}(undef, 5)
-        strings = Array{Array}(undef, 5)
-        criterions = Array{Float64}(undef, 5)
+    if optimize == true
 
-        sVal = [lower[1], lower[1], upper[1], upper[1], (upper[1]+lower[1]) / 2]
-        sVal = [0., 0., 0., 0., 0., 0.]
-        eVal = [lower[n+1], upper[n+1], lower[n+1], upper[n+1], (upper[n+1] + lower[n+1]) / 2]
-          
+        sVal = [lower[1], lower[1], upper[1], upper[1], 0., 0., 0.]     
+        eVal = [lower[n+1], upper[n+1], lower[n+1], upper[n+1], (upper[n+1] + lower[n+1]) / 2, lower[n+1], upper[n+1]]
 
-        Threads.@threads for i in 1:5
+        len = length(sVal)
+        p = Array{Array}(undef, len)
+        k = Array{Array}(undef, len)
+        strings = Array{Array}(undef, len)
+        criterions = Array{Float64}(undef, len) 
+
+        Threads.@threads for i in 1:len
             p[i], k[i] = tautString(lower, upper, C, sVal[i], eVal[i])
             strings[i] = stringify(p[i], k[i], n)
             criterions[i] = criterion(y, strings[i], C)
@@ -54,13 +58,9 @@ function stringify(p, k, len)
 
     no_knots = length(p)
 
-    #x_range = range(0, 1, (n+1))
-
-    
-    #factor = 1 / len
     
     for i in 1:(no_knots-1)
-        slope = (k[i+1] - k[i]) / ((p[i+1] - p[i]) ) #* factor)
+        slope = (k[i+1] - k[i]) / ((p[i+1] - p[i]) ) 
         string[p[i]:(p[i+1]-1)] .= slope
 
     end
@@ -153,7 +153,7 @@ function tautString(lower :: Vector, upper :: Vector, C :: Real, startValue :: F
     end # end while
     
     if s_points[end] == n
-        println("s_points[end] == n")
+        #println("s_points[end] == n")
         push!(s_knots, endValue)
     else
         push!(s_points, n)
