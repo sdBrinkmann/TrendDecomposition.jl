@@ -16,7 +16,8 @@ end
 
 
 """
-    trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ)
+    trendADMM(y :: Vector, λ :: Real; m::Int = 2, max_iter::Int = 2000, ρ::Real=λ,
+                ϵ_abs::Float64=1.e-4, ϵ_rel::Float64=1.e-3)
 
 Trend filtering of time series data y by using the L1 penalty with regularization parameter λ
 and using the m'th difference.
@@ -26,7 +27,9 @@ reach a numerical solution.
 The function returns the estimated trend component.
 
 """
-function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ)
+function trendADMM(y :: Vector, λ :: Real;
+                   m::Int = 2, max_iter::Int = 2000, ρ::Real=λ,
+                   ϵ_abs::Float64=1.e-4, ϵ_rel::Float64=1.e-3)
     n = length(y) 
     z = zeros(Float64, n)
     u = zeros(Float64, n)
@@ -45,8 +48,8 @@ function trendADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ)
     ρ = Float64(ρ)
     
     
-    ϵ_abs = 1.e-4
-    ϵ_rel = 1.e-2
+    #ϵ_abs = 1.e-4
+    #ϵ_rel = 1.e-3
     
     D = difference_matrix(n, m, full=true)
     #ρ = λ
@@ -89,7 +92,9 @@ end
 
 
 """
-    tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000,  ρ::Real=λ, opt::Bool = false)
+    tautADMM(y :: Vector, λ :: Real;
+                m::Int = 2, max_iter::Int = 2000, ρ::Real=λ, opt::Bool = false,
+                ϵ_abs::Float64=1.e-4, ϵ_rel::Float64=1.e-2)
 
 Trend filtering of time series data y by using the L1 penalty with regularization parameter λ
 and using the m'th difference.
@@ -100,7 +105,9 @@ is used as an edge case solution.
 
 The function returns the estimated trend component.
 """
-function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ, opt::Bool = false)
+function tautADMM(y :: Vector, λ :: Real;
+                  m::Int = 2, max_iter::Int = 2000, ρ::Real=λ, opt::Bool = false,
+                  ϵ_abs::Float64=1.e-4, ϵ_rel::Float64=1.e-2)
     n = length(y) 
     z = zeros(Float64, n)
     u = zeros(Float64, n)
@@ -125,8 +132,8 @@ function tautADMM(y :: Vector, λ :: Real; m = 2, max_iter = 2000, ρ::Real=λ, 
 
     ρ = Float64(ρ)
     
-    ϵ_abs = 1.e-4
-    ϵ_rel = 1.e-2
+    #ϵ_abs = 1.e-4
+    #ϵ_rel = 1.e-2
     
     D = difference_matrix(n, m, full=true)
 
@@ -186,7 +193,8 @@ function trendL1Filter() end
     
 
 """
-    fusedADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
+    fusedADMM(y :: Vector, λ :: Real; m::Int = 2, max_iter::Int = 1000, ρ::Real=λ,
+                ϵ_abs::Float64=1.e-4, ϵ_rel::Float64=1.e-2)
 
 Placeholder for FusedADMM extension, when using TrendDecomposition together with Lasso.jl package.
 

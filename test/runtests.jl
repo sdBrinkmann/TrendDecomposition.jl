@@ -195,7 +195,7 @@ end
 @testset "l1TrendFiltering" begin
     string, _ = tautStringFit(y, 100_000)
     @test all(string .≈ mean(y))
-    #@test all(trendADMM(y, 100_000, m=1) .≈ mean(y))
+    @test all(trendADMM(y, 100_000, m=1, ϵ_abs=1.e-8, ϵ_rel=1.e-7) .≈ mean(y))
     @test all(fusedADMM(y, 100_000, m=1) .≈ mean(y))
     @test all(string .≈ mean(y))
     

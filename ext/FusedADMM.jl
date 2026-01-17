@@ -6,7 +6,8 @@ using TrendDecomposition, Lasso, LinearAlgebra
 
 
 """
-    fusedADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
+    fusedADMM(y :: Vector, λ :: Real; m::Int = 2, max_iter::Int = 1000, ρ::Real=λ,
+                ϵ_abs::Float64=1.e-4, ϵ_rel::Float64=1.e-2)
 
 Trend filtering of time series data y by using the L1 penalty with regularization parameter λ
 and using the m'th difference.
@@ -17,7 +18,9 @@ is used as an edge case solution.
 
 The function returns the estimated trend component.
 """
-function TrendDecomposition.fusedADMM(y :: Vector, λ :: Real; m = 2, max_iter = 1000, ρ=λ)
+function TrendDecomposition.fusedADMM(y :: Vector, λ :: Real;
+                                      m::Int = 2, max_iter::Int = 1000, ρ::Real=λ,
+                                      ϵ_abs::Float64=1.e-4, ϵ_rel::Float64=1.e-2)
     n = length(y) 
     z = zeros(Float64, n)
     u = zeros(Float64, n)
@@ -29,8 +32,8 @@ function TrendDecomposition.fusedADMM(y :: Vector, λ :: Real; m = 2, max_iter =
         throw(DomainError(max_iter, "max_iter must be positive"))
     elseif m < 1
         throw(DomainError(m, "Order of differentation must be greater than 0"))
-    elseif ρ < 0
-        throw(DomainError(ρ, "Only values greater equal 0 can be used for ρ"))
+    elseif ρ < 1.
+        throw(DomainError(ρ, "Only values greater equal 1 can be used for ρ"))
     end
     
     if m == 1
@@ -40,8 +43,8 @@ function TrendDecomposition.fusedADMM(y :: Vector, λ :: Real; m = 2, max_iter =
         m -= 1
     end
     
-    ϵ_abs = 1.e-4
-    ϵ_rel = 1.e-2
+    #ϵ_abs = 1.e-4
+    #ϵ_rel = 1.e-2
     
     D = TrendDecomposition.difference_matrix(n, m, full=true)
     #ρ = λ
