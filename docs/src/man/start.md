@@ -124,8 +124,8 @@ plot([data D1 residual], layout = (5, 1), ylabel = ["y" "level" "slope" "season"
 The damping factor ``\varphi`` can be typed in julia with the keyboard as follows: \varphi`<tab>`
 ``` Julia
 
-# Forecast horizon h = 24 and damping factor \varphi = 0.95
-f2, D2, p2 = holtWinters(data, seasons, h=24, model=:mul, φ = 0.95)
+# Forecast horizon h = 24 and damping factor \varphi = 1
+f2, D2, p2 = holtWinters(data, seasons, h=24, model=:mul, φ = 1)
 
 n = length(data)
 steps = (n+1):(n+24)

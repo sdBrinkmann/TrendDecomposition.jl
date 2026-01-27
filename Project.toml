@@ -1,7 +1,7 @@
 name = "TrendDecomposition"
 uuid = "d73ad930-938d-4709-8eff-50e740f82fcd"
 authors = ["Stefan Brinkmann <sdbrinkmann@outlook.com>"]
-version = "0.5.0"
+version = "0.5.1"
 
 
 [deps]

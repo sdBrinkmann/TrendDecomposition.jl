@@ -269,10 +269,10 @@ function holtWinters(y :: Vector, λ₁ :: Real, λ₂ :: Real, λ₃ :: Real, s
     if model == :add
          S[1:s] = maSeason(y[1:(2*s)] .- rollingAverage(y[1:(2*s)], p), s)
         for t in start:T
+            F[t] = lvl[t-1] + b[t-1] * φ + S[(t-s < 1 ? t : t-s)]
             lvl[t] = λ₁*(y[t] - S[(t-s < 1 ? t : t-s)]) + (1. - λ₁)*(lvl[t-1] + b[t-1] * φ)
             b[t] = λ₂ * (lvl[t] - lvl[t-1]) + (1. - λ₂) * b[t-1] * φ
             S[t] = λ₃ * (y[t] - lvl[t]) + (1. - λ₃) * S[(t-s < 1 ? t : t-s)]
-            F[t] = lvl[t-1] + b[t-1] * φ + S[(t-s-1 < 1 ? t-1 : t-s-1)]
         end
 
         if φ == 1.0
@@ -291,10 +291,10 @@ function holtWinters(y :: Vector, λ₁ :: Real, λ₂ :: Real, λ₃ :: Real, s
     elseif model == :mul
         S[1:s] = maSeason(y[1:(2*s)] ./ rollingAverage(y[1:(2*s)], p), s)
         for t in start:T
+            F[t] = (lvl[t-1] + b[t-1] * φ) * S[(t-s < 1 ? t : t-s)]
             lvl[t] = λ₁*(y[t] / S[(t-s < 1 ? t : t-s)]) + (1. - λ₁)*(lvl[t-1] + b[t-1] * φ)
             b[t] = λ₂ * (lvl[t] - lvl[t-1]) + (1. - λ₂) * b[t-1] * φ
             S[t] = λ₃ * (y[t] / lvl[t]) + (1. - λ₃) * S[(t-s < 1 ? t : t-s)]
-            F[t] = (lvl[t-1] + b[t-1] * φ) * S[(t-s-1 < 1 ? t-1 : t-s-1)]
         end
 
         if φ == 1.0
