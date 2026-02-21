@@ -5,7 +5,7 @@ makedocs(
     modules = [TrendDecomposition],
 format = Documenter.HTML(
     canonical = "https://sdbrinkmann.github.io/TrendDecomposition.jl/stable/",
-    footer = "© 2025 Stefan D. Brinkmann",
+    footer = "© 2026 Stefan D. Brinkmann",
     ),
     pages = [
 	"Introduction" => "index.md",
@@ -13,10 +13,11 @@ format = Documenter.HTML(
         "Moving Average" => "man/moving.md",
         "Penalized Smoothing" => "man/penalized.md",
         "Exponential Smoothing" => "man/exponential.md",
+        "Spectral Analysis" => "man/spectral.md",
 	"API" => [
             "Miscellaneous" => "man/misc.md",
             "Index" => "man/api.md",
-            ],
+        ],
     ]	
 )
 

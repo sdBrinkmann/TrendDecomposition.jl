@@ -11,6 +11,8 @@ include("movingAverages.jl")
 include("expSmoothing.jl")
 include("l1TrendFilter.jl")
 include("tautString.jl")
+include("arEstimation.jl")
+include("spectralAnalysis.jl")
 
 greet() = print("Hello World!")
 
@@ -31,6 +33,11 @@ export
     fusedADMM,
     tautStringFit,
     greatestConvexMinorant,
-    leastConcaveMajorant
+    leastConcaveMajorant,
+
+    arSpectrum,
+    periodogram,
+    arBurg,
+    arOLS
 
 end # module

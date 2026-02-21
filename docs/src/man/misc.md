@@ -15,6 +15,14 @@ greatestConvexMinorant
 leastConcaveMajorant(y :: Vector)
 ```
 
+```@docs
+arBurg
+```
+
+```@docs
+arOLS
+```
+
 
 ## Experimental
 
