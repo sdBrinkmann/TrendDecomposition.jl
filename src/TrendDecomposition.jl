@@ -20,24 +20,31 @@ export
     hpFilter,
     bhpFilter,
     bohlmannFilter,
+    
     rollingAverage,
     maSeason,
     maDecompose,
+    
     expSmoothing,
     brownLinear,
     holtLinear,
     holtWinters,
+    
     trendL1Filter,
     trendADMM,
     tautADMM,
     fusedADMM,
     tautStringFit,
+    
     greatestConvexMinorant,
     leastConcaveMajorant,
 
     arSpectrum,
     periodogram,
     arBurg,
-    arOLS
+    arOLS,
+    arYuleWalker,
+    arDurbinLevinson,
+    autoCovariance
 
 end # module

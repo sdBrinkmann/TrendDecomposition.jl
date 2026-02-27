@@ -15,6 +15,9 @@ greatestConvexMinorant
 leastConcaveMajorant(y :: Vector)
 ```
 
+## Autoregression AR(p) Estimation
+
+
 ```@docs
 arBurg
 ```
@@ -23,6 +26,17 @@ arBurg
 arOLS
 ```
 
+```@docs
+arYuleWalker
+```
+
+```@docs
+arDurbinLevinson
+```
+
+```@docs
+autoCovariance
+```
 
 ## Experimental
 
