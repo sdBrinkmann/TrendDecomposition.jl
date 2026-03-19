@@ -3,8 +3,8 @@ uuid = "d73ad930-938d-4709-8eff-50e740f82fcd"
 authors = ["Stefan Brinkmann <sdbrinkmann@outlook.com>"]
 version = "0.6.0"
 
-
 [deps]
+FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
 HypothesisTests = "09f84164-cd44-5f33-b23f-e6b0d136a0d5"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Optim = "429524aa-4258-5aef-a3af-852621145aeb"
@@ -13,16 +13,17 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [weakdeps]
 Convex = "f65535da-76fb-5f13-bab9-19810c17039a"
-SCS = "c946c3f1-0d1f-5ce8-9dea-7daa1f7e2d13"
 Lasso = "b4fcebef-c861-5a0f-a7e2-ba9dc32b180a"
+SCS = "c946c3f1-0d1f-5ce8-9dea-7daa1f7e2d13"
 
 [extensions]
-L1MethodsExt = ["Convex", "SCS"]
 FusedADMM = ["Lasso"]
+L1MethodsExt = ["Convex", "SCS"]
 
 [compat]
 Convex = "0.16"
 Distributions = "0.25"
+FFTW = "1.10.0"
 HypothesisTests = "0.11"
 Lasso = "0.7.3"
 LinearAlgebra = "1.11"

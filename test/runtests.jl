@@ -237,3 +237,50 @@ end
 end
 
 
+@testset "Autocovariance" begin
+    c1 = autoCovariance(y, 200)
+    c2 = autoCovariance(y, 200, method=:fourier)
+    @test c1 ≈ c2
+    c, _ = autoCovariance(y, 200, method=:fourier, demean=true, cov=true)
+    @test c ≈ cov(y, corrected=false)
+    @test autoCovariance(y, 200, demean=true) == autoCovariance(y .- mean(y), 200)
+end
+
+
+@testset "arSpectrum" begin
+    (a1, a2) = arSpectrum(y)
+    (p, σ) = arBurg(y, 3)
+    (a3, a4) = arSpectrum(p, σ, T=200)
+    @test a4 ≈ a2
+
+    (a1, a2) = arSpectrum(y, method=:ols)
+    (p, σ) = arOLS(y, 3)
+    (a3, a4) = arSpectrum(p, σ, T=200)
+    @test a4 ≈ a2
+
+    (a1, a2) = arSpectrum(y, method=:yuleWalker)
+    (p, σ) = arYuleWalker(y, 3)
+    (a3, a4) = arSpectrum(p, σ, T=200)
+    @test a4 ≈ a2
+end
+
+@testset "Autoregressive Models" begin 
+    yW = arDurbinLevinson(y, 3)
+    DL = arYuleWalker(y, 3)
+    @test yW[1] ≈ DL[1]
+    @test yW[2] ≈ DL[2]
+    
+    #ols = arOLS(y, 3)
+    #burg = arBurg(y, 3)
+    #@test ols[1]
+
+    @test_throws DomainError arOLS(y, -1)
+    @test_throws DomainError arBurg(y, -1)
+    @test_throws DomainError arYuleWalker(y, -1)
+    @test_throws DomainError arDurbinLevinson(y, -1)
+
+    @test_throws DomainError arOLS(y, 0)
+    @test_throws DomainError arBurg(y, 0)
+    @test_throws DomainError arYuleWalker(y, 0)
+    @test_throws DomainError arDurbinLevinson(y, 0)
+end

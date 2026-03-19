@@ -1,4 +1,4 @@
-# Moving Average (MA)
+# Moving Averages
 
 ## Rolling Average
 The name rolling average instead of moving average is choosen here, because by

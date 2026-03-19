@@ -17,13 +17,13 @@ provided by this module.
 
 The following is a list of already implemented and documented methods:
 
-- Exponential Smoothing
+- [Exponential Smoothing](@ref)
   - Simple exponential smoothing
   - Double exponential smoothing / Brown linear method
   - Holt Linear procedure
   - Holt Winters method
   
-- Penalized smoothing
+- [Penalized Smoothing](@ref)
   - Bohlmann Filter / Whittaker-Henderson Smoothing
   - Leser / Hodrick-Prescott (HP) Filter
   - Boosted HP Filter
@@ -33,10 +33,20 @@ The following is a list of already implemented and documented methods:
   - L1 trend filtering with ADMM using fused Lasso
 
   
+- [Moving Averages](@ref)
+  - Moving Average (MA)
+  - Seasonal Average
+  - Classical Decomposition by moving averages
   
-- Moving Average (MA)
-- Seasonal Average
-- Classical Decomposition by moving averages
+- [Spectral Analysis](@ref)
+  - Spectral density of p-th order process
+  - Periodogram
+  
+- [Autoregression AR(p) Estimation](@ref)
+  - Burg's method
+  - OLS
+  - Yule-Walker
+  - Durbin-Levinson
 
 Examples, which demonstrate the usecase of some of the implemented methods, can be found
 in the [Usage](@ref) section. 

@@ -5,6 +5,7 @@ using SparseArrays
 using HypothesisTests
 using Statistics
 using Optim
+using FFTW
 
 include("HPFilter.jl")
 include("movingAverages.jl")

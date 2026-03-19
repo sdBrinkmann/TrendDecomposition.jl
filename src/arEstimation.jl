@@ -47,7 +47,7 @@ function arBurg(y :: Vector, p :: Int;
             Θ[i, j] = Θ[i-1, j] - Θ[i, i] * Θ[i-1, i-j]
         end
     end
-   
+    
     θ₀ = μ * (1 - sum(Θ[p, :]))
     Φ = Θ[p, p:-1:1]
     #σ2 = sum([y[i] - Φ' * y[i-p:i-1] - θ₀ for i in (p+1):n].^2) / (n - 2*p - 1)
@@ -100,7 +100,7 @@ function arOLS(y :: Vector, p :: Int; intercept::Bool = false)
         Φ = inv(X'X) * X' * Y[p+1:end]
         #Φ = X'X \ X' * Y[p+1:end]
         #param = reverse(Φ')
-        σ² = sum([Y[i] - Φ' * Y[i-1:-1:i-p] for i in (p+1):n].^2) / (n - 2*p -1)
+        σ² = sum([Y[i] - Φ' * Y[i-1:-1:i-p] for i in (p+1):n].^2) / (n - 2*p - 1)
     end
 
     return (Φ, σ²)
@@ -130,7 +130,7 @@ function arYuleWalker(y :: Vector, p :: Int)
     X = y .- μ
 
     γ₀ = X' * X / T
-    γ = autoCovariance(X, T, maxCov=p);
+    γ = autoCovariance(X, T, maxLag=p);
 
     function indexCov(index :: Int)
         if index == 0
@@ -159,7 +159,8 @@ end
 
 
 """
-    arYuleWalker(y :: Vector, p :: Int)
+    arDurbinLevinson(y :: Vector, p :: Int;
+                          intercept::Bool = false, pacf::Bool = false) 
 
 Fits an autoregressive model of order p to time series y
 using the Durbin-Levinson recursion.
@@ -182,7 +183,7 @@ function arDurbinLevinson(y :: Vector, p :: Int;
     X = y .- μ
 
     γ₀ = X' * X / n
-    γ = autoCovariance(X, n, maxCov=p)
+    γ = autoCovariance(X, n, maxLag=p)
     
     Θ = zeros(p, p)  # Array{Float64, 2}(undef, p, p)
 

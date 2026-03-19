@@ -32,14 +32,25 @@ The following is a list of already implemented and documented methods:
   - L1 trend filtering with ADMM using taut string
   - L1 trend filtering with ADMM using fused Lasso
 
+- Moving Averages  
+  - Moving Average (MA)
+  - Seasonal Average
+  - Classical Decomposition by moving averages
+
+- Spectral Analysis
+  - Spectral density of p-th order process
+  - Periodogram
   
-- Moving Average (MA)
-- Seasonal Average
-- Classical Decomposition by moving averages
+- Autoregression AR(p) Estimation
+  - Burg's method
+  - OLS
+  - Yule-Walker
+  - Durbin-Levinson
 
 Auxiliary functions included:
 - Least concave majorant
 - Greatest convex minorant
+- Autocovariance 
 
 
 Get Started

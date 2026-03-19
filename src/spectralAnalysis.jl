@@ -1,22 +1,50 @@
 
 
 """
-    autoCovariance(X :: Vector, T::Int; maxCov::Int=T-1)
+    autoCovariance(X :: Vector, T::Int;
+                 maxLag::Int=T-1, method::Symbol=:classic, cov::Bool=false, demean::Bool=false)
     
-Calculates the autocovariance of time series X
+Calculates the autocovariance of time series X with length T, by default it is assumed that the
+data is already centered (demean=false).
+For large series the method :fourier can be choosen, which uses the fast fourier transform.
+
+Returns a (maxLag x 1) vector of the autocovariance.
+For the method :fouier with cov=true a tulpe containing the covariance and autocovariance is returned.
 """
-function autoCovariance(X :: Vector, T::Int; maxCov::Int=T-1)
-    
-    #T = length(X)   
-    γ = Array{Float64, 1}(undef, maxCov)
-    Threads.@threads for j = 1:maxCov
-        acc = 0
-        for i in 1:(T-j)
-            @inbounds acc += X[i] * X[i+j]
-            @inbounds γ[j] = acc / T
-        end
+function autoCovariance(X :: Vector, T :: Int;
+                 maxLag::Int=T-1, method::Symbol=:classic, cov::Bool=false, demean::Bool=false)
+
+    if demean == true
+        μ = sum(X) / T
+        X = X .- μ
     end
-    return γ
+    
+    #T = length(X)
+    if method == :classic
+        γ = Array{Float64, 1}(undef, maxLag)
+        Threads.@threads for j = 1:maxLag
+            acc = 0
+            for i in 1:(T-j)
+                @inbounds acc += X[i] * X[i+j]
+                @inbounds γ[j] = acc / T
+            end
+        end
+        return γ
+    elseif method == :fourier
+        x = zeros(T+T-1)
+        x[1:T] .= X
+        ft = fft(x)
+        ft = (abs.(ft)).^2
+        r = ifft(ft)
+        R = real(r) ./ T
+        if demean == true
+            return (R[1], R[2:maxLag+1])
+        else
+            return R[2:maxLag+1]
+        end
+    else
+        throw(ArgumentError("Invalid method. Valid options are :classic, :fourier"))
+    end
 end
 
 
@@ -45,7 +73,7 @@ function periodogram(Y :: Vector; trunc::Int=-1)
     
     X = Y .- μ
     γ₀ = X' * X / T
-    γ = autoCovariance(X, T, maxCov=trunc)
+    γ = autoCovariance(X, T, maxLag=trunc)
     
     ω = [2*i*π/T for i in 1:M]
     perio = zeros(Float64, M)
@@ -64,15 +92,14 @@ end
 
 
 """
-    arSpectrum(Φ :: Vector, σ::Float64; T = 100)
+    arSpectrum(Φ :: Vector, σ::Float64; T = 200)
 
 Computes the spectral density of a p-th order autoregressive process, given the
-parameter vector Φ and the variance σ. 
+parameter vector Φ and the variance σ for an equivalence of a time series length of T.
 
 """
-function arSpectrum(Φ :: Vector, σ::Float64; T = 100)
+function arSpectrum(Φ :: Vector, σ :: Float64; T::Int = 100)
 
-    #T = length(y)
     M = Int(ceil((T-1) / 2))
     ω = [2*i*π/T for i in 1:M]
 
