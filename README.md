@@ -33,12 +33,12 @@ The following is a list of already implemented and documented methods:
   - L1 trend filtering with ADMM using fused Lasso
 
 - Moving Averages  
-  - Moving Average (MA)
+  - Moving Average 
   - Seasonal Average
   - Classical Decomposition by moving averages
 
 - Spectral Analysis
-  - Spectral density of p-th order process
+  - Spectral density of AR(p) process
   - Periodogram
   
 - Autoregression AR(p) Estimation

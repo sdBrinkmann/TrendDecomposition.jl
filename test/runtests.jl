@@ -241,7 +241,7 @@ end
     c1 = autoCovariance(y, 200)
     c2 = autoCovariance(y, 200, method=:fourier)
     @test c1 ≈ c2
-    c, _ = autoCovariance(y, 200, method=:fourier, demean=true, cov=true)
+    c, _ = autoCovariance(y, 200, method=:fourier, demean=true, covar=true)
     @test c ≈ cov(y, corrected=false)
     @test autoCovariance(y, 200, demean=true) == autoCovariance(y .- mean(y), 200)
 end

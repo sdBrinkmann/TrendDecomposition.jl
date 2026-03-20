@@ -2,17 +2,18 @@
 
 """
     autoCovariance(X :: Vector, T::Int;
-                 maxLag::Int=T-1, method::Symbol=:classic, cov::Bool=false, demean::Bool=false)
+                 maxLag::Int=T-1, method::Symbol=:classic, covar::Bool=false, demean::Bool=false)
     
 Calculates the autocovariance of time series X with length T, by default it is assumed that the
 data is already centered (demean=false).
 For large series the method :fourier can be choosen, which uses the fast fourier transform.
 
 Returns a (maxLag x 1) vector of the autocovariance.
-For the method :fouier with cov=true a tulpe containing the covariance and autocovariance is returned.
+For the method :fourier with covar=true a tulpe containing the covariance sclar and
+autocovariance vector is returned.
 """
 function autoCovariance(X :: Vector, T :: Int;
-                 maxLag::Int=T-1, method::Symbol=:classic, cov::Bool=false, demean::Bool=false)
+                 maxLag::Int=T-1, method::Symbol=:classic, covar::Bool=false, demean::Bool=false)
 
     if demean == true
         μ = sum(X) / T
@@ -37,7 +38,7 @@ function autoCovariance(X :: Vector, T :: Int;
         ft = (abs.(ft)).^2
         r = ifft(ft)
         R = real(r) ./ T
-        if demean == true
+        if covar == true
             return (R[1], R[2:maxLag+1])
         else
             return R[2:maxLag+1]
@@ -53,11 +54,10 @@ end
 
 Estimates the spectral density function of a process Y with discrete spectra.
 
-As estimation procedure the discrete fourier transform of the sample autocovariance is used. A truncation point can be given with trunc, so that a truncated periodogram
-is estimated. 
+As estimation procedure the discrete fourier transform of the sample autocovariance is used. A truncation point can be given with trunc, so that a truncated periodogram is estimated.
 
-Returns a tulpe (ω, spectra), where ω is the vector of frequency the periodogram ordinates,
-spectra, are estimated for.
+Returns a tulpe (ω, spectra), where ω is the vector of frequency the periodogram ordinates (spectra)
+are estimated for.
 """
 function periodogram(Y :: Vector; trunc::Int=-1)
     
