@@ -14,6 +14,7 @@ include("l1TrendFilter.jl")
 include("tautString.jl")
 include("arEstimation.jl")
 include("spectralAnalysis.jl")
+include("bandPass.jl")
 
 greet() = print("Hello World!")
 
@@ -46,6 +47,8 @@ export
     arOLS,
     arYuleWalker,
     arDurbinLevinson,
-    autoCovariance
+    autoCovariance,
+
+    baxterKing
 
 end # module

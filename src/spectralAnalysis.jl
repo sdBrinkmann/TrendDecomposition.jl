@@ -14,17 +14,17 @@ autocovariance vector is returned.
 """
 function autoCovariance(X :: Vector, T :: Int;
                  maxLag::Int=T-1, method::Symbol=:classic, covar::Bool=false, demean::Bool=false)
-
+    
     if demean == true
-        μ = sum(X) / T
-        X = X .- μ
+        μ :: Float64 = sum(X) / T
+        X :: Vector{Float64} = X .- μ
     end
     
     #T = length(X)
     if method == :classic
-        γ = Array{Float64, 1}(undef, maxLag)
+        γ  = Array{Float64, 1}(undef, maxLag)
         Threads.@threads for j = 1:maxLag
-            acc = 0
+            acc  = 0.0
             for i in 1:(T-j)
                 @inbounds acc += X[i] * X[i+j]
                 @inbounds γ[j] = acc / T
@@ -68,18 +68,18 @@ function periodogram(Y :: Vector; trunc::Int=-1)
     if trunc >= T
         throw(DomainError(trunc, "trunc has to be smaller than length of vector Y"))
     elseif trunc == -1
-        trunc = T - 1
+        trunc::Int = T - 1
     end
     
     X = Y .- μ
     γ₀ = X' * X / T
     γ = autoCovariance(X, T, maxLag=trunc)
     
-    ω = [2*i*π/T for i in 1:M]
-    perio = zeros(Float64, M)
-
+    ω :: Vector{Float64} = [2*i*π/T for i in 1:M]
+    #perio = zeros(Float64, M)
+    perio = Array{Float64, 1}(undef, M)
     Threads.@threads for i in 1:Int(M)
-        acc = 0
+        acc = 0.0
         for j in 1:trunc
             @inbounds acc += γ[j] * cos(ω[i] * j)
         end

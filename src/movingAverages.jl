@@ -82,7 +82,6 @@ in any case all used weights will sum to 1.
 """
 function rollingAverage(y :: Vector, p :: Int, weights :: Vector;
                         centered::Bool = true, discard::Bool = false, offset::Int = 0)
-    @assert sum(weights) ≈ 1
     len_y = length(y)
     len_w = length(weights)
     @assert len_w == p   
@@ -98,6 +97,8 @@ function rollingAverage(y :: Vector, p :: Int, weights :: Vector;
             index = first:last
             if (length(index) == p)
                 ave[t] = sum(y[index], weights)
+            elseif discard == true
+                ave[t] = NaN
             else
                 ave[t] = sum(y[index],
                              weights[(center + first - t):(center + last - t)]
