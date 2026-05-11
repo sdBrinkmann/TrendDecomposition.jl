@@ -22,21 +22,22 @@ of the frequency component ``\omega`` as
  - ... - a_p exp(-ip\omega)|^2}
 ```
 
-For an early treatment of this procedure see Akaike (1969)[^1]
+For an early treatment of this procedure see Akaike (1969)[^1] and for a modern treatment of the different estimation approaches see Percival and Walden (2020).
 
 [^1]:
 	> Akaike, H. (1969). Power spectrum estimation through autoregressive model fitting. Annals of the institute of Statistical Mathematics, 21(1), 407-419.
 	
-	
+[^2]:
+	> Percival, D. B., & Walden, A. T. (2020). Spectral Analysis for Univariate Time Series. Cambridge: Cambridge University Press. 
 
 ```@docs
 arSpectrum
 ```
 
 ## Periodogram
-For a time series ``X(t)`` the periodogram is defined as the modulus-squared of the finite Fourier transform in accordance with the definition of Schulz (1898)[^2]:
+For a time series ``X(t)`` the periodogram is defined as the modulus-squared of the finite Fourier transform in accordance with the definition of Schulz (1898)[^3]:
 
-[^2]:
+[^3]:
 	>Schuster, A. (1898), On the investigation of hidden periodicities with application to a supposed 26 day period of meteorological phenomena, Terr. Magn., 3(1), 13–41, doi:10.1029/TM003i001p00013.
 
 ```math
@@ -53,10 +54,13 @@ as
 ```
 
 Using the factor ``\frac{1}{2 \pi}`` here lets the periodogram also serve as a direct estimate of
-the spectral density or power spectrum of a covariance stationary process (see Brillinger 1975[^3]). 
+the spectral density or power spectrum of a covariance stationary process (see Brillinger 1975[^4] or Priestley 1981[^5]). 
 
-[^3]:
+[^4]:
 	>Brillinger, D. R. (1975). Time series: data analysis and theory. Holt, Rinehart and Winston, New York
+	
+[^5]:
+	>Priestley, M. B. Spectral Analysis and Time Series, Volume 1. Academic Press Inc. London
 
 
 ```@docs
@@ -68,9 +72,9 @@ periodogram
 	
 	
 ### Baxter-King 
-Baxter-King (1999)[^4] provide an approximate band-pass filter, denoted by the authors as ``BK_{K}(pl, pu)``, where K states the numbers of lags (or leads) to include and the bandwidth is stated in terms of the periodicity of cycles (``2\pi / \omega``) to include (pl denotes the lowest and pu the highest period included).
+Baxter-King (1999)[^6] provide an approximate band-pass filter, denoted by the authors as ``BK_{K}(pl, pu)``, where K states the numbers of lags (or leads) to include and the bandwidth is stated in terms of the periodicity of cycles (``2\pi / \omega``) to include (pl denotes the lowest and pu the highest period included).
 
-[^4]:
+[^6]:
 	> Baxter, M., & King, R. G. (1999). Measuring business cycles: approximate band-pass filters for economic time series. Review of economics and statistics, 81(4), 575-593.
 ```@docs
 baxterKing

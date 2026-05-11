@@ -92,7 +92,7 @@ function arOLS(y :: Vector, p :: Int; intercept::Bool = false)
     if intercept == true
         X = hcat(ones(n-p), [y[(p+1-i):(end-i)] for i in 1:p]...)
         Φ = inv(X'X) * X' * y[p+1:end]
-        σ2 = sum([y[i] - Φ' * vcat(1, y[i-1:-1:i-p]) for i in (p+1):n].^2) / (n - 2*p -1)
+        σ² = sum([y[i] - Φ' * vcat(1, y[i-1:-1:i-p]) for i in (p+1):n].^2) / (n - 2*p -1)
     else
         μ = mean(y)
         Y = y .- μ
