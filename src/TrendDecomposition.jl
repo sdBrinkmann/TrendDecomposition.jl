@@ -15,6 +15,7 @@ include("tautString.jl")
 include("arEstimation.jl")
 include("spectralAnalysis.jl")
 include("bandPass.jl")
+include("stochastic.jl")
 
 greet() = print("Hello World!")
 
@@ -49,6 +50,8 @@ export
     arDurbinLevinson,
     autoCovariance,
 
-    baxterKing
+    baxterKing,
+
+    beveridgeNelson
 
 end # module

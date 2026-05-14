@@ -40,6 +40,7 @@ The following is a list of already implemented and documented methods:
 - Spectral Analysis
   - Spectral density of AR(p) process
   - Periodogram
+  - Baxter-King Filter
   
 - Autoregression AR(p) Estimation
   - Burg's method

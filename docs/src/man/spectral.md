@@ -22,7 +22,7 @@ of the frequency component ``\omega`` as
  - ... - a_p exp(-ip\omega)|^2}
 ```
 
-For an early treatment of this procedure see Akaike (1969)[^1] and for a modern treatment of the different estimation approaches see Percival and Walden (2020).
+For an early treatment of this procedure see Akaike (1969)[^1] and for a modern treatment of the different estimation approaches see Percival and Walden (2020)[^2].
 
 [^1]:
 	> Akaike, H. (1969). Power spectrum estimation through autoregressive model fitting. Annals of the institute of Statistical Mathematics, 21(1), 407-419.

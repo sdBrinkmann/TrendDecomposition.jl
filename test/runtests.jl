@@ -284,3 +284,15 @@ end
     @test_throws DomainError arYuleWalker(y, 0)
     @test_throws DomainError arDurbinLevinson(y, 0)
 end
+
+
+@testset "Beveridge Nelson Decomposition" begin
+    res1 = beveridgeNelson(y, 3)
+    res2 = beveridgeNelson(y, 3, method=:Miller)
+    @test res1[4:end] != res2[4:end]
+    dif = res2[4] - res1[4]
+    @test isapprox(res1[4:end], (res2[4:end] .- dif), atol=0.1)
+    bnD = TrendDecomposition.bnNewbold(y, 3)
+    bnD1 = TrendDecomposition.bnNewbold2(y, 3)
+    @test isapprox(bnD[5:end],bnD1[5:end], atol=0.1)
+end

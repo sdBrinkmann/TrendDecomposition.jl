@@ -117,7 +117,7 @@ using the Yule-Walker estimators.
 Returns the tulpe (Φ, σ²), where Φ is the vector of estimated coefficients
 and σ² is the variance of the error terms.  
 """
-function arYuleWalker(y :: Vector, p :: Int)
+function arYuleWalker(y :: Vector, p :: Int; intercept=false)
 
     T = length(y)
 
@@ -153,8 +153,11 @@ function arYuleWalker(y :: Vector, p :: Int)
     Φ = inv(Γ) * γ[1:p]
     σ² =  γ₀ - Φ' * γ[1:p]    
     #σ2 = sum([Y[i] - Φ' * Y[i-1:-1:i-p] for i in (p+1):T].^2) / (T - 2*p -1)
-
-    return (Φ, σ²)
+    if intercept == false
+        return (Φ, σ²)
+    else
+        return (vcat(μ*(1-sum(Φ)) , Φ), σ²)
+    end
 end
 
 

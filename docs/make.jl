@@ -14,6 +14,7 @@ format = Documenter.HTML(
         "Penalized Smoothing" => "man/penalized.md",
         "Exponential Smoothing" => "man/exponential.md",
         "Spectral Analysis" => "man/spectral.md",
+        "Stochastic" => "man/stochastic.md",
 	"API" => [
             "Miscellaneous" => "man/misc.md",
             "Index" => "man/api.md",
