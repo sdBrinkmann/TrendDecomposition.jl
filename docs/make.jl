@@ -13,6 +13,7 @@ format = Documenter.HTML(
         "Moving Average" => "man/moving.md",
         "Penalized Smoothing" => "man/penalized.md",
         "Exponential Smoothing" => "man/exponential.md",
+        "Parametric Estimation" => "man/parametric.md",
         "Spectral Analysis" => "man/spectral.md",
         "Stochastic" => "man/stochastic.md",
 	"API" => [

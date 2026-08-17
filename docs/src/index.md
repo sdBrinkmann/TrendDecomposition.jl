@@ -42,7 +42,7 @@ The following is a list of already implemented and documented methods:
   - Periodogram
   - Baxter-King Filter
   
-- [Autoregression AR(p) Estimation](@ref)
+- [Autoregressiv Process AR(p)](@ref)
   - Burg's method
   - OLS
   - Yule-Walker

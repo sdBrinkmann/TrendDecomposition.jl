@@ -16,6 +16,7 @@ include("arEstimation.jl")
 include("spectralAnalysis.jl")
 include("bandPass.jl")
 include("stochastic.jl")
+include("ARMA.jl")
 
 greet() = print("Hello World!")
 
@@ -52,6 +53,9 @@ export
 
     baxterKing,
 
-    beveridgeNelson
+    beveridgeNelson,
+
+    ARMA_NR,
+    MA_NR
 
 end # module

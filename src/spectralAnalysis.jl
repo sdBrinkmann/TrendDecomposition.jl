@@ -9,7 +9,7 @@ data is already centered (demean=false).
 For large series the method :fourier can be choosen, which uses the fast fourier transform.
 
 Returns a (maxLag x 1) vector of the autocovariance.
-For the method :fourier with covar=true a tulpe containing the covariance sclar and
+For the method :fourier with covar=true a tulpe containing the covariance scalar and
 autocovariance vector is returned.
 """
 function autoCovariance(X :: Vector, T :: Int;
