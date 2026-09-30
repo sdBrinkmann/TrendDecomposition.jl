@@ -48,10 +48,17 @@ The following is a list of already implemented and documented methods:
   - Yule-Walker
   - Durbin-Levinson
 
+- Moving Average MA(p) process estimation and forecasting
+
+- ARMA(p, q) estimation and forecasting
+
+- Beveridge-Nelson Decomposition
+
 Auxiliary functions included:
 - Least concave majorant
 - Greatest convex minorant
 - Autocovariance 
+- Partial autocorrelation function (PACF)
 
 
 Get Started

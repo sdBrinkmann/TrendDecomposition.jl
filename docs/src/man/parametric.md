@@ -22,12 +22,12 @@ arDurbinLevinson
 ## Moving Average Process MA(p)
 
 ```@docs
-MA_NR
+maNR
 ```
 ## ARMA(p, q)
 
 Mixed autoregressive and moving average process ARMA(p, q)
 
 ```@docs
-ARMA_NR
+armaNR
 ```

@@ -221,3 +221,18 @@ function arDurbinLevinson(y :: Vector, p :: Int;
         end
     end
 end
+
+
+"""
+    function PACF(y :: Vector, p :: Int)
+
+Computes the partial autocorrelation function (PACF) up to lag p.
+
+Returns (px1) vector containing the first p values of the PACF.
+"""
+function PACF(y :: Vector, p :: Int)
+
+    _, _, pac = arDurbinLevinson(y, p, pacf = true)
+
+    return pac
+end

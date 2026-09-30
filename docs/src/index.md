@@ -47,6 +47,12 @@ The following is a list of already implemented and documented methods:
   - OLS
   - Yule-Walker
   - Durbin-Levinson
+  
+- [Moving Average Process MA(p)](@ref)
+
+- [ARMA(p, q)](@ref)
+  
+- [Berveridge-Nelson Decomposition](@ref)
 
 Examples, which demonstrate the usecase of some of the implemented methods, can be found
 in the [Usage](@ref) section. 

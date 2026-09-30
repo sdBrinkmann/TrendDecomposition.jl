@@ -15,11 +15,25 @@ greatestConvexMinorant
 leastConcaveMajorant(y :: Vector)
 ```
 
-## Autocovariance
+## Autocovariance & PACF
 
 
 ```@docs
 autoCovariance
+```
+
+```@docs
+PACF
+```
+
+## Forecasting
+
+```@docs
+maForecast
+```
+
+```@docs
+armaForecast
 ```
 
 

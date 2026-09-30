@@ -295,4 +295,28 @@ end
     bnD = TrendDecomposition.bnNewbold(y, 3)
     bnD1 = TrendDecomposition.bnNewbold2(y, 3)
     @test isapprox(bnD[5:end],bnD1[5:end], atol=0.1)
+
+    #dy = y[2:end] .- y[1:(200-1)]
+    #ϕ, _ = arOLS(dy, 3)
+    #bnMil = TrendDecomposition.bnMiller(y, 3)
+    #μ = mean(dy)
+    #m = sum([j * ϕ[j] * μ for j in 1:3])
+    #@test isapprox(bnMil[5:end] .- m , bnD[5:end])
+    
+end
+
+
+@testset "ARMA" begin
+    coef, _ = arYuleWalker(y, 1)
+    β, α, _ = armaNR(y, 1, 1, iter=0)
+    @test α == [0.4]
+    @test β == coef
+
+    α, _ = maNR(y, 1, iter=0)
+    @test α == [0.2]
+
+    f = armaForecast(y, coef, [0.])
+
+    f == coef * y[end] .+ (mean(y) * (1 .- coef))
+    armaForecast(y, [0.0], [0.5]) == maForecast(y, [0.5])
 end

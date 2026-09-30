@@ -73,15 +73,15 @@ function mulLL(a::Vector, b::Vector, l::Int, k::Int, T::Int)
 end
 
 """
-    MA_NR(y :: Vector; q::Int = 1, iter::Int = 5, α = fill(0.2, q)) 
+    maNR(y :: Vector, q::Int = 1; iter::Int = 5, α = fill(0.2, q)) 
 
 Estimates a MA(q) model using the maximum likelihood function and
 the Newton-Raphson procedure.
 
-Returns a tuple, (α, σ) where α is the vector containing the MA (qx1) coeffients,
+Returns a tuple, (α, σ) where α is the (qx1) vector containing the MA  coeffients,
 and σ is the estimated variance. 
 """
-function MA_NR(y :: Vector; q::Int = 1, iter::Int = 5, α = fill(0.2, q))   
+function maNR(y :: Vector, q::Int = 1; iter::Int = 5, α = fill(0.2, q))   
     T :: Int = length(y)
     #α :: Vector{Float64} = fill(0.4, q)
     q_vec = Vector{Float64}(undef, q)
@@ -119,14 +119,14 @@ end
 
 
 """
-    ARMA_NR(y :: Vector; p::Int = 1, q::Int = 1, iter::Int = 5, α = fill(0.4, q), β=[-1.])
+    armaNR(y :: Vector, p::Int = 1, q::Int = 1; iter::Int = 5, α = fill(0.4, q), β=[-1.])
 
 Estimates an ARMA(p, q) model using the maximum likelihood function and
 the Newton-Raphson procedure.
 
-Returns a tuple, (β, α, σ) where β and α are the vectors containing the AR(px1) and MA(qx1) coefficients respectively, and σ is the estimated variance. 
+Returns a tuple, (β, α, σ) where β and α are the vectors containing the p AR and q MA coefficients respectively, and σ is the estimated variance. 
 """
-function ARMA_NR(y :: Vector; p::Int = 1, q::Int = 1, iter::Int = 5, α = fill(0.4, q), β=[-1.])
+function armaNR(y :: Vector, p::Int = 1, q::Int = 1; iter::Int = 5, α = fill(0.4, q), β=[-1.])
     
     T :: Int = length(y)
     #α :: Vector{Float64} = fill(0.0, q)
@@ -194,6 +194,43 @@ function ARMA_NR(y :: Vector; p::Int = 1, q::Int = 1, iter::Int = 5, α = fill(0
     mulA!(Ay, a, y, T)
     mulB!(v, β, Ay, p, T)
     σ = v' * v / T
-    return (α, -β, σ)
+    return (-β, α, σ)
 end
 
+
+
+function likelihoodARMA(y :: Vector, ϕ :: Vector, θ :: Vector, σ :: Float64)
+
+    T :: Int = length(y)
+    a = Vector{Float64}(undef, T) 
+    Ay = Vector{Float64}(undef, T)
+    v = Vector{Float64}(undef, T)
+
+    q = length(θ)
+    p = length(ϕ)
+    
+    colInv!(a, θ, q, T)
+    mulA!(Ay, a, y, T)
+    mulB!(v, ϕ, Ay, p, T)
+
+    L = - 0.5 * T * log(2*π)  - 0.5 * T * log(σ)  -  v' * v / (σ * 2)
+  
+    return L
+end
+
+
+function likelihoodMA(y :: Vector, θ :: Vector, σ :: Float64)
+
+    T :: Int = length(y)
+    a = Vector{Float64}(undef, T) 
+    Ay = Vector{Float64}(undef, T)
+    q = length(θ)
+
+    
+    colInv!(a, θ, q, T)
+    mulA!(Ay, a, y, T)
+
+    L = - 0.5 * T * log(2*π)  - 0.5 * T * log(σ)  -  Ay' * Ay / (σ * 2)
+  
+    return L
+end

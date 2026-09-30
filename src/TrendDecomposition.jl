@@ -50,12 +50,15 @@ export
     arYuleWalker,
     arDurbinLevinson,
     autoCovariance,
+    PACF,
 
     baxterKing,
 
     beveridgeNelson,
 
-    ARMA_NR,
-    MA_NR
+    armaNR,
+    maNR,
+    armaForecast,
+    maForecast
 
 end # module
