@@ -295,13 +295,9 @@ end
     bnD = TrendDecomposition.bnNewbold(y, 3)
     bnD1 = TrendDecomposition.bnNewbold2(y, 3)
     @test isapprox(bnD[5:end],bnD1[5:end], atol=0.1)
-
-    #dy = y[2:end] .- y[1:(200-1)]
-    #ϕ, _ = arOLS(dy, 3)
-    #bnMil = TrendDecomposition.bnMiller(y, 3)
-    #μ = mean(dy)
-    #m = sum([j * ϕ[j] * μ for j in 1:3])
-    #@test isapprox(bnMil[5:end] .- m , bnD[5:end])
+    
+    phi, theta, _ = armaNR(y[2:end] .- y[1:199], 1, 1)
+    @test beveridgeNelson(y, phi, theta)[2:end] == beveridgeNelson(y, 1, 1)[2:end]
     
 end
 
@@ -319,4 +315,7 @@ end
 
     f == coef * y[end] .+ (mean(y) * (1 .- coef))
     armaForecast(y, [0.0], [0.5]) == maForecast(y, [0.5])
+
+   
+    
 end

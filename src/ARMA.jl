@@ -81,7 +81,12 @@ the Newton-Raphson procedure.
 Returns a tuple, (α, σ) where α is the (qx1) vector containing the MA  coeffients,
 and σ is the estimated variance. 
 """
-function maNR(y :: Vector, q::Int = 1; iter::Int = 5, α = fill(0.2, q))   
+function maNR(y :: Vector, q::Int = 1; iter::Int = 5, α = fill(0.2, q))
+
+    if q < 1
+        throw(DomainError(q, "Order q has to be a positive integer"))
+    end
+    
     T :: Int = length(y)
     #α :: Vector{Float64} = fill(0.4, q)
     q_vec = Vector{Float64}(undef, q)
@@ -124,9 +129,19 @@ end
 Estimates an ARMA(p, q) model using the maximum likelihood function and
 the Newton-Raphson procedure.
 
+Both p and q have to be greater equal than one.
+
 Returns a tuple, (β, α, σ) where β and α are the vectors containing the p AR and q MA coefficients respectively, and σ is the estimated variance. 
 """
 function armaNR(y :: Vector, p::Int = 1, q::Int = 1; iter::Int = 5, α = fill(0.4, q), β=[-1.])
+
+    if q < 1
+        throw(DomainError(q, "Order q and p both have to be a positive integer"))
+    end
+
+    if p < 1
+        throw(DomainError(p, "Order q and p both have to be a positive integer"))
+    end
     
     T :: Int = length(y)
     #α :: Vector{Float64} = fill(0.0, q)
